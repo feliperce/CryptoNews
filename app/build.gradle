@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+
+    defaultConfig {
+        applicationId "br.com.mobileti.cryptonews"
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.appcompat:appcompat:$androidx_appcompat"
+    implementation "androidx.core:core-ktx:$androidx_core"
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Test
+    testImplementation "junit:junit:$junit"
+    androidTestImplementation "androidx.test.ext:junit:$junit_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+
+    // Material
+    implementation "com.google.android.material:material:$material"
+
+    // Navigation Component
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigation"
+
+    // Koin
+    implementation "org.koin:koin-android:$koin"
+    implementation "org.koin:koin-androidx-viewmodel:$koin"
+    testImplementation "org.koin:koin-test:$koin"
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
+
+    // Room
+    implementation "androidx.room:room-runtime:$room"
+    implementation "androidx.room:room-ktx:$room"
+    kapt "androidx.room:room-compiler:$room"
+
+    // DB Debug
+    debugImplementation "com.amitshekhar.android:debug-db:$db_debug"
+
+}
