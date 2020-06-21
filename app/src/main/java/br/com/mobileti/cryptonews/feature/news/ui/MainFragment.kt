@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.ui.main
+package br.com.mobileti.cryptonews.feature.news.ui
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.mobileti.cryptonews.R
+import br.com.mobileti.cryptonews.feature.news.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 

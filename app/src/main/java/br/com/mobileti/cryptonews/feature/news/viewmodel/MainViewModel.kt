@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.ui.main
+package br.com.mobileti.cryptonews.feature.news.viewmodel
 
 import androidx.lifecycle.ViewModel
 
