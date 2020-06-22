@@ -1,6 +1,8 @@
 package br.com.mobileti.cryptonews.data.remote.service
 
 import br.com.mobileti.cryptonews.data.remote.response.NewsResponse
+import br.com.mobileti.cryptonews.feature.news.viewmodel.News
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,6 +14,11 @@ interface NewsService {
     @GET
     suspend fun getNews(
         @Query("apiKey") apiKey: String
-    ): NewsResponse
+    ): Response<NewsResponse>
+
+    @GET
+    suspend fun getNewss(
+        @Query("apiKey") apiKey: String
+    ): Response<News>
 
 }
