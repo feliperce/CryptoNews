@@ -58,6 +58,7 @@ task createApiProperties() {
     def propFile = new File("${project.rootDir}/api.properties")
 
     if (!propFile.exists()) {
+        println("*** Arquivo api.properties criado, altere a key!! ***")
         def props = new Properties()
         props.setProperty("key", "ENTER_KEY")
         props.store(propFile.newWriter(), "Crie uma nova key em https://newsapi.org/")
