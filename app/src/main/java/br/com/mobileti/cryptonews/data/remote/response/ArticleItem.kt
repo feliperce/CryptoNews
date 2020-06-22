@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.feature.data.remote.response
+package br.com.mobileti.cryptonews.data.remote.response
 
 data class ArticleItem(
     val author: String? = null,

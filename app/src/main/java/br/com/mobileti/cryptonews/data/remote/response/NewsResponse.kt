@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.feature.data.remote.response
+package br.com.mobileti.cryptonews.data.remote.response
 
 data class NewsResponse(
     val articles: List<ArticleItem>? = arrayListOf(),

@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 
 def ENDPOINT_DEBUG_URL = "http://newsapi.org/v2/"
 def ENDPOINT_RELEASE_URL = "http://newsapi.org/v2/"
+def API_KEY = getApiKey()
 
 android {
     compileSdkVersion 29
@@ -17,7 +18,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField("String", "API_KEY", getApiKey())
+        buildConfigField("String", "API_KEY", "\"$API_KEY\"")
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,13 +34,18 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
     dataBinding {
         enabled true
     }
 
 }
 
-def getApiKey() {
+String getApiKey() {
     try {
         def apikeyPropertiesFile = rootProject.file("api.properties")
         def apikeyProperties = new Properties()
@@ -62,6 +68,7 @@ dependencies {
     testImplementation "junit:junit:$junit"
     androidTestImplementation "androidx.test.ext:junit:$junit_ext"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
 
     // Lifecycle
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle"
@@ -83,6 +90,8 @@ dependencies {
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$gsonconverter_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttpinterceptor_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room"
