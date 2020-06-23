@@ -3,8 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def ENDPOINT_DEBUG_URL = "http://newsapi.org/v2/"
-def ENDPOINT_RELEASE_URL = "http://newsapi.org/v2/"
+def ENDPOINT_DEBUG_URL = "https://newsapi.org/v2/"
+def ENDPOINT_RELEASE_URL = "https://newsapi.org/v2/"
 def API_KEY = getApiKey()
 
 android {

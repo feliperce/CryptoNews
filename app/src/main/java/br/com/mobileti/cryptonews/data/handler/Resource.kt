@@ -4,7 +4,7 @@ import br.com.mobileti.cryptonews.data.exception.ErrorException
 
 data class Resource<out T>(val status: Status, val data: T? = null, val message: Int = -1) {
     companion object {
-        fun <T> remoteSuccess(data: T?): Resource<T> {
+        fun <T> success(data: T?): Resource<T> {
             return Resource(
                 Status.Success,
                 data,
@@ -12,15 +12,7 @@ data class Resource<out T>(val status: Status, val data: T? = null, val message:
             )
         }
 
-        fun <T> localSuccess(data: T?): Resource<T> {
-            return Resource(
-                Status.Success,
-                data,
-                -1
-            )
-        }
-
-        fun <T> remoteError(exception: ErrorException? = null): Resource<T> {
+        fun <T> error(exception: ErrorException? = null): Resource<T> {
             return Resource(
                 Status.Error(exception)
             )

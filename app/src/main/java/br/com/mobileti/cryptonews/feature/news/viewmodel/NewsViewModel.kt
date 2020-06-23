@@ -1,0 +1,32 @@
+package br.com.mobileti.cryptonews.feature.news.viewmodel
+
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import br.com.mobileti.cryptonews.BuildConfig
+import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+
+class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+
+    private val TAG = NewsViewModel::class.java.simpleName
+
+    private val _dataLoadingLiveData = MutableLiveData<Boolean>()
+    val dataLoadingLiveData: LiveData<Boolean> = _dataLoadingLiveData
+
+    init {
+        //getNews()
+    }
+
+    fun getNews() {
+        viewModelScope.launch {
+            newsRepository.getNews(BuildConfig.API_KEY).collect {
+                Log.d(TAG, it.toString())
+            }
+        }
+    }
+
+}

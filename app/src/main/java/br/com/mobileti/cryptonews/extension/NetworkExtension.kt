@@ -17,20 +17,20 @@ inline fun <reified T> Retrofit.networkCall(service: Retrofit.() -> Response<T>)
         val response = service()
 
         if (response.isSuccessful) {
-            Resource.remoteSuccess(response.body())
+            Resource.success(response.body())
         } else {
-            Resource.remoteError(GenericException(R.string.error_generic))
+            Resource.error(GenericException(R.string.error_generic))
         }
     } catch (e: Exception) {
 
         when (e) {
             is UnknownHostException -> {
-                Resource.remoteError(NoConnectionException(R.string.no_connection))
+                Resource.error(NoConnectionException(R.string.no_connection))
             }
             is TimeoutException -> {
-                Resource.remoteError(ConnectionTimeoutException(R.string.error_timeout))
+                Resource.error(ConnectionTimeoutException(R.string.error_timeout))
             }
-            else -> Resource.remoteError(GenericException(R.string.error_generic))
+            else -> Resource.error(GenericException(R.string.error_generic))
         }
     }
 }

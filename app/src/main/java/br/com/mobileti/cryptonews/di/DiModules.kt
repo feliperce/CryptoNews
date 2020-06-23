@@ -2,8 +2,11 @@ package br.com.mobileti.cryptonews.di
 
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
+import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
+import br.com.mobileti.cryptonews.feature.news.viewmodel.NewsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -32,5 +35,14 @@ val retrofitModule = module {
         return retrofit.create(NewsService::class.java)
     }
 
+    single { retrofit() }
     single { newsApiService(get()) }
+}
+
+val repositoryModule = module {
+    factory { NewsRepository(get(), get()) }
+}
+
+val viewModelModule = module {
+    viewModel { NewsViewModel(get()) }
 }
