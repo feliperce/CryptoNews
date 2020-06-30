@@ -1,9 +1,8 @@
 package br.com.mobileti.cryptonews.application
 
 import android.app.Application
-import br.com.mobileti.cryptonews.di.repositoryModule
-import br.com.mobileti.cryptonews.di.retrofitModule
-import br.com.mobileti.cryptonews.di.viewModelModule
+import br.com.mobileti.cryptonews.di.*
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
 class DefaultApplication : Application() {
@@ -12,8 +11,11 @@ class DefaultApplication : Application() {
         super.onCreate()
 
         startKoin {
+            androidContext(applicationContext)
             modules(
                 arrayListOf(
+                    workerModule,
+                    dbModule,
                     retrofitModule,
                     repositoryModule,
                     viewModelModule

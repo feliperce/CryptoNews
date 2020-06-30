@@ -6,24 +6,23 @@ import br.com.mobileti.cryptonews.data.exception.GenericException
 import br.com.mobileti.cryptonews.data.exception.NoConnectionException
 import br.com.mobileti.cryptonews.data.handler.Resource
 import retrofit2.Response
-import retrofit2.Retrofit
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-inline fun <reified T> Retrofit.networkCall(service: Retrofit.() -> Response<T>): Resource<T> {
+inline fun <reified T> Response<T>.networkCall(block: Response<T>.(resource: Resource<T>) -> Unit) {
 
-    return try {
+    var resource: Resource<T>? = null
 
-        val response = service()
+    try {
 
-        if (response.isSuccessful) {
-            Resource.success(response.body())
+        resource = if (isSuccessful) {
+            Resource.success(body())
         } else {
             Resource.error(GenericException(R.string.error_generic))
         }
     } catch (e: Exception) {
 
-        when (e) {
+        resource = when (e) {
             is UnknownHostException -> {
                 Resource.error(NoConnectionException(R.string.no_connection))
             }
@@ -32,5 +31,8 @@ inline fun <reified T> Retrofit.networkCall(service: Retrofit.() -> Response<T>)
             }
             else -> Resource.error(GenericException(R.string.error_generic))
         }
+    }
+    finally {
+        resource?.let { block.invoke(this, it) }
     }
 }

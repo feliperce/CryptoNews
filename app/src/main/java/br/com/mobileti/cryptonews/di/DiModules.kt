@@ -1,15 +1,35 @@
 package br.com.mobileti.cryptonews.di
 
+import android.content.Context
+import androidx.room.Room
+import androidx.work.*
 import br.com.mobileti.cryptonews.BuildConfig
+import br.com.mobileti.cryptonews.data.local.db.Database
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
+import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
 import br.com.mobileti.cryptonews.feature.news.viewmodel.NewsViewModel
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
+val workerModule = module {
+    factory { WorkManager.getInstance(androidContext()) }
+}
+
+val dbModule = module {
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            Database::class.java, "CryptoNews"
+        ).build()
+    }
+}
 
 val retrofitModule = module {
 
@@ -40,9 +60,9 @@ val retrofitModule = module {
 }
 
 val repositoryModule = module {
-    factory { NewsRepository(get(), get()) }
+    factory { NewsRepository(get(), get(), get()) }
 }
 
 val viewModelModule = module {
-    viewModel { NewsViewModel(get()) }
+    viewModel { NewsViewModel(get(), get()) }
 }

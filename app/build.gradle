@@ -39,6 +39,10 @@ android {
         targetCompatibility 1.8
     }
 
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
     dataBinding {
         enabled true
     }
@@ -100,5 +104,8 @@ dependencies {
 
     // DB Debug
     debugImplementation "com.amitshekhar.android:debug-db:$db_debug"
+
+    // WorkManager
+    implementation "androidx.work:work-runtime-ktx:$workmanager"
 
 }

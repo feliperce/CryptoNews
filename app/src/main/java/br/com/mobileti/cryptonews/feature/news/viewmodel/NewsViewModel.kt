@@ -5,12 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
+
+class NewsViewModel(
+    private val newsRepository: NewsRepository,
+    private val workManager: WorkManager
+) : ViewModel() {
 
     private val TAG = NewsViewModel::class.java.simpleName
 
@@ -18,13 +23,33 @@ class NewsViewModel(private val newsRepository: NewsRepository) : ViewModel() {
     val dataLoadingLiveData: LiveData<Boolean> = _dataLoadingLiveData
 
     init {
-        //getNews()
+        /*val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val workRequest = PeriodicWorkRequestBuilder<NewsWorker>(15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .addTag("NewsWorkManager")
+            .build()*/
+
+        /*workManager.getWorkInfosByTagLiveData("NewsWorkManager")
+            .observe(viewLifecycleOwner, Observer { workInfo ->
+                Log.d("WOOOOOOOOORLK", "FINISHED")
+
+            })*/
+
+        //workManager.enqueue(workRequest)
+        getNews()
     }
 
     fun getNews() {
         viewModelScope.launch {
-            newsRepository.getNews(BuildConfig.API_KEY).collect {
-                Log.d(TAG, it.toString())
+            /*newsRepository.getCachedNews(BuildConfig.API_KEY).collect {
+                Log.d(TAG, it.status.toString())
+            }*/
+
+            newsRepository.syncNews(BuildConfig.API_KEY).collect {
+                Log.d(TAG, it.status.toString())
             }
         }
     }

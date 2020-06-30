@@ -4,4 +4,6 @@ sealed class Status {
     object Success : Status()
     class Error(val exception: Exception? = null) : Status()
     class Loading(val isLoading: Boolean) : Status()
+    object CallingNetwork : Status()
+    object WritingDb : Status()
 }
