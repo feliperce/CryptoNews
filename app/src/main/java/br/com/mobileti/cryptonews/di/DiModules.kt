@@ -16,7 +16,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 
 val workerModule = module {
     factory { WorkManager.getInstance(androidContext()) }
@@ -60,7 +59,7 @@ val retrofitModule = module {
 }
 
 val repositoryModule = module {
-    factory { NewsRepository(get(), get(), get()) }
+    factory { NewsRepository(get(), get()) }
 }
 
 val viewModelModule = module {

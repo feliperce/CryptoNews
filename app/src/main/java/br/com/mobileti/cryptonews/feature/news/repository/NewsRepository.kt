@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.*
 import retrofit2.Retrofit
 
 class NewsRepository(
-    private val retrofit: Retrofit,
     private val newsService: NewsService,
     private val db: Database
 ) {
