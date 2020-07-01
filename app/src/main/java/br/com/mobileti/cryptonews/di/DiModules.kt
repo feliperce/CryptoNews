@@ -63,5 +63,5 @@ val repositoryModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { NewsViewModel(get(), get()) }
+    viewModel { NewsViewModel(get()) }
 }

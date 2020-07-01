@@ -11,6 +11,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import br.com.mobileti.cryptonews.R
+import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.feature.news.viewmodel.NewsViewModel
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
@@ -22,6 +23,7 @@ class NewsFragment : Fragment() {
     }
 
     private val viewModel: NewsViewModel by inject()
+    private val workManager: NewsWorker by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -34,5 +36,6 @@ class NewsFragment : Fragment() {
         viewModel.dataLoadingLiveData.observe(viewLifecycleOwner, Observer {
 
         })
+
     }
 }
