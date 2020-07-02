@@ -5,3 +5,4 @@
 * Retrofit and Room sync
 * Work Manager
 * Coroutines Flow
+* DataBinding
