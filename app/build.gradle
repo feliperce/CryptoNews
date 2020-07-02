@@ -84,6 +84,9 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation"
 
+    // Koil
+    implementation "io.coil-kt:coil:$koil"
+
     // Koin
     implementation "org.koin:koin-android:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"

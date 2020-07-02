@@ -3,7 +3,7 @@
 
     <!-- ERROR -->
     <string name="error_generic">Ocorreu um erro inesperado, tente novamente mais tarde.</string>
-    <string name="no_connection">Você está sem conexão com a internet.</string>
+    <string name="no_connection">Ocorreu um erro, verifique sua conexão com a internet.</string>
     <string name="error_timeout">O serviço está temporariamente indisponível, tente novamente mais tarde</string>
     <string name="error_empty_api">Precisa informar sua API Key</string>
 

@@ -17,10 +17,6 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-val workerModule = module {
-    factory { WorkManager.getInstance(androidContext()) }
-}
-
 val dbModule = module {
     single {
         Room.databaseBuilder(

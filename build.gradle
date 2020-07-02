@@ -25,6 +25,7 @@ ext {
     room = '2.2.5'
     db_debug = '1.0.6'
     workmanager = '2.3.4'
+    koil = '0.11.0'
 }
 
 buildscript {

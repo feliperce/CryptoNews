@@ -29,9 +29,13 @@ class NewsRepository(
         emit(Resource.loading(true))
     }.onCompletion {
         emit(Resource.loading(false))
-    }.onEach {
+    }.flowOn(Dispatchers.Default)
+    .transform {
         if (it.status == Status.WritingDb && it.data != null) {
             db.newsDao().insertNews(it.data)
+            emit(Resource.success(it.data))
+        } else {
+            emit(it)
         }
     }.flowOn(Dispatchers.IO)
 
@@ -45,14 +49,17 @@ class NewsRepository(
             onRemoteResource = { Resource.writingDb(it?.articles) }
         ))
 
-    }.flowOn(Dispatchers.Default)
-    .onStart {
+    }.onStart {
         emit(Resource.loading(true))
     }.onCompletion {
         emit(Resource.loading(false))
-    }.onEach {
+    }.flowOn(Dispatchers.Default)
+    .transform {
         if (it.status == Status.WritingDb && it.data != null) {
             db.newsDao().insertNews(it.data)
+            emit(Resource.success(it.data))
+        } else {
+            emit(it)
         }
     }.flowOn(Dispatchers.IO)
 
