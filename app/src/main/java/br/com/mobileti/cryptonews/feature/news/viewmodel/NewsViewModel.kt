@@ -35,7 +35,7 @@ class NewsViewModel(
     val newsLiveData: LiveData<List<Article>> = _newsLiveData
 
     init {
-        //getCachedNews()
+        getCachedNews()
     }
 
     fun syncNews() {
