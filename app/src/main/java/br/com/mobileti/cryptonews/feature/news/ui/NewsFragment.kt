@@ -20,6 +20,7 @@ import br.com.mobileti.cryptonews.feature.news.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.main_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.core.qualifier.named
 
 class NewsFragment : Fragment() {
 

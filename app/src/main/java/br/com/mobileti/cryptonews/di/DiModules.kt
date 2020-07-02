@@ -13,9 +13,26 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+
+val workerModule = module {
+    single(named("DI_NEWS_WORKER_REQUEST")) {
+        val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresBatteryNotLow(true)
+            .build()
+
+        PeriodicWorkRequestBuilder<NewsWorker>(15, TimeUnit.MINUTES)
+            .setConstraints(constraints)
+            .setInitialDelay(5, TimeUnit.MINUTES)
+            .addTag(NewsWorker.TAG_WORKER)
+            .build()
+    }
+}
 
 val dbModule = module {
     single {

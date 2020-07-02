@@ -5,13 +5,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.data.handler.Resource
 import br.com.mobileti.cryptonews.data.handler.Status
 import br.com.mobileti.cryptonews.data.model.Article
+import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 
 class NewsViewModel(
@@ -30,19 +35,7 @@ class NewsViewModel(
     val newsLiveData: LiveData<List<Article>> = _newsLiveData
 
     init {
-        /*val constraints: Constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .setRequiresDeviceIdle(true)
-            .build()
-
-        val workRequest = PeriodicWorkRequestBuilder<NewsWorker>(15, TimeUnit.MINUTES)
-            .setConstraints(constraints)
-            .addTag(NewsWorker.TAG_WORKER)
-            .build()*/
-
-
-        //workManager.enqueue(workRequest)
-        getCachedNews()
+        //getCachedNews()
     }
 
     fun syncNews() {

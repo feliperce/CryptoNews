@@ -14,6 +14,7 @@ class DefaultApplication : Application() {
             androidContext(applicationContext)
             modules(
                 arrayListOf(
+                    workerModule,
                     dbModule,
                     retrofitModule,
                     repositoryModule,
