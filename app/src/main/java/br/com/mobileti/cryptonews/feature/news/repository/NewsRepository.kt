@@ -41,8 +41,6 @@ class NewsRepository(
 
     fun syncNews(apiKey: String): Flow<Resource<List<Article>>> = flow {
 
-        db.newsDao().deleteAllNews()
-
         emitAll(callResourceData(
             local = { emptyList<Article>() },
             remote = { newsService.getNews(apiKey) },
@@ -56,6 +54,7 @@ class NewsRepository(
     }.flowOn(Dispatchers.Default)
     .transform {
         if (it.status == Status.WritingDb && it.data != null) {
+            db.newsDao().deleteAllNews()
             db.newsDao().insertNews(it.data)
             emit(Resource.success(it.data))
         } else {

@@ -13,6 +13,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import br.com.mobileti.cryptonews.R
+import br.com.mobileti.cryptonews.data.model.Article
 import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.databinding.MainFragmentBinding
 import br.com.mobileti.cryptonews.feature.news.viewmodel.NewsViewModel
@@ -51,6 +52,14 @@ class NewsFragment : Fragment() {
                     false
                 )
             })
+
+            with (newsSwipeRefreshLayout) {
+                setOnRefreshListener {
+                    isRefreshing = false
+                    syncNews()
+                }
+            }
+
         }
 
     }

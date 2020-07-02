@@ -5,19 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.data.handler.Resource
 import br.com.mobileti.cryptonews.data.handler.Status
 import br.com.mobileti.cryptonews.data.model.Article
-import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 class NewsViewModel(
@@ -48,24 +42,38 @@ class NewsViewModel(
 
 
         //workManager.enqueue(workRequest)
-        getNews()
+        getCachedNews()
     }
 
-    fun getNews() {
+    fun syncNews() {
         viewModelScope.launch {
 
             newsRepository.syncNews(BuildConfig.API_KEY).collect {
-                Log.d("NewsViewModel", it.status.toString())
-                when (it.status) {
-                    is Status.Loading -> {
-                        _dataLoadingLiveData.postValue(it.status.isLoading)
-                    }
-                    is Status.Error -> {
-                        _errorHandlerLiveData.postValue(it.status.exception?.msg)
-                    }
-                    is Status.Success -> {
-                        _newsLiveData.postValue(it.data ?: emptyList())
-                    }
+                newsCollect(it)
+            }
+        }
+    }
+
+    private fun getCachedNews() {
+        viewModelScope.launch {
+
+            newsRepository.getCachedNews(BuildConfig.API_KEY).collect {
+                newsCollect(it)
+            }
+        }
+    }
+
+    private fun newsCollect(newsResource: Resource<List<Article>>) {
+        newsResource.let {
+            when (it.status) {
+                is Status.Loading -> {
+                    _dataLoadingLiveData.postValue(it.status.isLoading)
+                }
+                is Status.Error -> {
+                    _errorHandlerLiveData.postValue(it.status.exception?.msg)
+                }
+                is Status.Success -> {
+                    _newsLiveData.postValue(it.data ?: emptyList())
                 }
             }
         }
