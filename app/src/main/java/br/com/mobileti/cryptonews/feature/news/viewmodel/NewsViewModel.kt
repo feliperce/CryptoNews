@@ -1,22 +1,17 @@
 package br.com.mobileti.cryptonews.feature.news.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
 import br.com.mobileti.cryptonews.BuildConfig
+import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.data.handler.Resource
 import br.com.mobileti.cryptonews.data.handler.Status
 import br.com.mobileti.cryptonews.data.model.Article
-import br.com.mobileti.cryptonews.data.worker.NewsWorker
 import br.com.mobileti.cryptonews.feature.news.repository.NewsRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 class NewsViewModel(
@@ -35,7 +30,11 @@ class NewsViewModel(
     val newsLiveData: LiveData<List<Article>> = _newsLiveData
 
     init {
-        getCachedNews()
+        if (hasApiKey()) {
+            getCachedNews()
+        } else {
+            _errorHandlerLiveData.postValue(R.string.error_empty_api)
+        }
     }
 
     fun syncNews() {
@@ -45,6 +44,10 @@ class NewsViewModel(
                 newsCollect(it)
             }
         }
+    }
+
+    private fun hasApiKey(): Boolean {
+        return BuildConfig.API_KEY != "ENTER_KEY"
     }
 
     private fun getCachedNews() {
