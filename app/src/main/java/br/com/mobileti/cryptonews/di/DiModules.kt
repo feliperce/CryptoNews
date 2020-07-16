@@ -1,8 +1,9 @@
 package br.com.mobileti.cryptonews.di
 
-import android.content.Context
 import androidx.room.Room
-import androidx.work.*
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.data.local.db.Database
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
@@ -36,11 +37,14 @@ val workerModule = module {
 
 val dbModule = module {
     single {
-        Room.databaseBuilder(
+        val db = Room.databaseBuilder(
             androidContext(),
             Database::class.java, "CryptoNews"
         ).build()
+
+        db.newsDao()
     }
+
 }
 
 val retrofitModule = module {
@@ -63,12 +67,11 @@ val retrofitModule = module {
             .build()
     }
 
-    fun newsApiService(retrofit: Retrofit): NewsService {
-        return retrofit.create(NewsService::class.java)
+    fun newsApiService(): NewsService {
+        return retrofit().create(NewsService::class.java)
     }
 
-    single { retrofit() }
-    single { newsApiService(get()) }
+    single { newsApiService() }
 }
 
 val repositoryModule = module {
