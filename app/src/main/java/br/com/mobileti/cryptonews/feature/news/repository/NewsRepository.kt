@@ -2,23 +2,22 @@ package br.com.mobileti.cryptonews.feature.news.repository
 
 import br.com.mobileti.cryptonews.data.handler.Resource
 import br.com.mobileti.cryptonews.data.handler.Status
-import br.com.mobileti.cryptonews.data.local.db.Database
+import br.com.mobileti.cryptonews.data.local.dao.NewsDao
 import br.com.mobileti.cryptonews.data.model.Article
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
 import br.com.mobileti.cryptonews.extension.callResourceData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import retrofit2.Retrofit
 
 class NewsRepository(
     private val newsService: NewsService,
-    private val db: Database
+    private val newsDao: NewsDao
 ) {
 
     fun getCachedNews(apiKey: String): Flow<Resource<List<Article>>> = flow {
 
         emitAll(callResourceData(
-            local = { db.newsDao().getNews() },
+            local = { newsDao.getNews() },
             remote = { newsService.getNews(apiKey) },
             shouldFetchFromRemote = { it.isNullOrEmpty() },
             onRemoteResource = { Resource.writingDb(it?.articles) }
@@ -32,7 +31,7 @@ class NewsRepository(
     }.flowOn(Dispatchers.Default)
     .transform {
         if (it.status == Status.WritingDb && it.data != null) {
-            db.newsDao().insertNews(it.data)
+            newsDao.insertNews(it.data)
             emit(Resource.success(it.data))
         } else {
             emit(it)
@@ -54,8 +53,8 @@ class NewsRepository(
     }.flowOn(Dispatchers.Default)
     .transform {
         if (it.status == Status.WritingDb && it.data != null) {
-            db.newsDao().deleteAllNews()
-            db.newsDao().insertNews(it.data)
+            newsDao.deleteAllNews()
+            newsDao.insertNews(it.data)
             emit(Resource.success(it.data))
         } else {
             emit(it)
