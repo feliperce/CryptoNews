@@ -41,4 +41,8 @@ object Dependencies {
         const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor"
     }
 
+    object Jetbrains {
+        const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
+    }
+
 }

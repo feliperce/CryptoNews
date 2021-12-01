@@ -61,7 +61,7 @@ dependencies {
     androidTestImplementation(Dependencies.Androidx.junit)
     androidTestImplementation(Dependencies.Androidx.espresso)
 
-    // Compose
+    // s2 Compose s2
     implementation(Dependencies.Androidx.Compose.ui)
     implementation(Dependencies.Androidx.Compose.material)
     implementation(Dependencies.Androidx.Compose.toolingPreview)
@@ -80,4 +80,7 @@ dependencies {
     implementation(platform(Dependencies.Square.okHttpBom))
     implementation(Dependencies.Square.okHttp)
     implementation(Dependencies.Square.okHttpLogging)
+
+    // Coroutines
+    implementation(Dependencies.Jetbrains.coroutines)
 }

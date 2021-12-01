@@ -14,4 +14,5 @@ object Versions {
     const val retrofit = "2.9.0"
     const val room = "2.3.0"
     const val okhttp = "4.9.3"
+    const val coroutines = "1.3.9"
 }
