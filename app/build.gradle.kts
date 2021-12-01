@@ -8,8 +8,8 @@ plugins {
 }
 
 val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
-val endpointDebugUrl = "https://newsapi.org/v2/$apiKey"
-val endpointReleaseUrl = "https://newsapi.org/v2/$apiKey"
+val endpointDebugUrl = "https://newsapi.org/v2/"
+val endpointReleaseUrl = "https://newsapi.org/v2/"
 
 android {
     compileSdk = Config.compileSdk
@@ -25,6 +25,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
