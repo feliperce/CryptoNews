@@ -4,17 +4,15 @@ plugins {
     kotlin("android.extensions")
 }
 
-var compose_version = "1.0.1"
-
 android {
-    compileSdk = 31
+    compileSdk = Config.compileSdk
 
     defaultConfig {
         applicationId = "br.com.mobileti.cryptonews"
-        minSdk = 21
-        targetSdk = 31
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
+        versionCode = Config.versionCode
+        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -39,7 +37,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose_version
+        kotlinCompilerExtensionVersion = Versions.compose
     }
     packagingOptions {
         resources {
@@ -50,17 +48,17 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("com.google.android.material:material:1.4.0")
-    implementation("androidx.compose.ui:ui:$compose_version")
-    implementation("androidx.compose.material:material:$compose_version")
-    implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-    implementation("androidx.activity:activity-compose:1.4.0")
-    testImplementation("junit:junit:4.+")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
-    debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
+    implementation(Dependencies.Androidx.core)
+    implementation(Dependencies.Androidx.appcompat)
+    implementation(Dependencies.Google.material)
+    implementation(Dependencies.Androidx.Compose.ui)
+    implementation(Dependencies.Androidx.Compose.material)
+    implementation(Dependencies.Androidx.Compose.toolingPreview)
+    implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
+    implementation(Dependencies.Androidx.Compose.activity)
+    testImplementation(Dependencies.Junit.junit)
+    androidTestImplementation(Dependencies.Androidx.junit)
+    androidTestImplementation(Dependencies.Androidx.espresso)
+    androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
+    debugImplementation(Dependencies.Androidx.Compose.tooling)
 }
