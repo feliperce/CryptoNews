@@ -1,9 +1,15 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
 }
+
+val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
+val endpointDebugUrl = "https://newsapi.org/v2/$apiKey"
+val endpointReleaseUrl = "https://newsapi.org/v2/$apiKey"
 
 android {
     compileSdk = Config.compileSdk
@@ -25,6 +31,10 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            buildConfigField("String", "ENDPOINT_URL", "\"$endpointReleaseUrl\"")
+        }
+        getByName("debug") {
+            buildConfigField("String", "ENDPOINT_URL", "\"$endpointDebugUrl\"")
         }
     }
     compileOptions {
