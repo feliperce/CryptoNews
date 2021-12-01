@@ -23,18 +23,5 @@ data class Resource<out T>(val status: Status, val data: T? = null, val message:
                 Status.Loading(isLoading)
             )
         }
-
-        fun <T> callingNetwork(): Resource<T> {
-            return Resource(
-                Status.CallingNetwork
-            )
-        }
-
-        fun <T> writingDb(data: T?): Resource<T> {
-            return Resource(
-                Status.WritingDb,
-                data
-            )
-        }
     }
 }
