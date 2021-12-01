@@ -13,4 +13,5 @@ object Versions {
     const val espressoCore = "3.4.0"
     const val retrofit = "2.9.0"
     const val room = "2.3.0"
+    const val okhttp = "4.9.3"
 }

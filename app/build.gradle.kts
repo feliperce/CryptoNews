@@ -75,5 +75,9 @@ dependencies {
     implementation(Dependencies.Androidx.Room.ktx)
 
     // Retrofit
-    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Square.retrofit)
+    // okhttp
+    implementation(platform(Dependencies.Square.okHttpBom))
+    implementation(Dependencies.Square.okHttp)
+    implementation(Dependencies.Square.okHttpLogging)
 }

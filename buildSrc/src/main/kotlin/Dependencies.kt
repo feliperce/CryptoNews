@@ -34,8 +34,11 @@ object Dependencies {
         const val junit = "junit:junit:${Versions.junit}"
     }
 
-    object Retrofit {
+    object Square {
         const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
+        const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okhttp}"
+        const val okHttp = "com.squareup.okhttp3:okhttp"
+        const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor"
     }
 
 }
