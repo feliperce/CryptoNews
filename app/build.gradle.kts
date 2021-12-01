@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("android.extensions")
+    kotlin("kapt")
 }
 
 android {
@@ -51,14 +52,28 @@ dependencies {
     implementation(Dependencies.Androidx.core)
     implementation(Dependencies.Androidx.appcompat)
     implementation(Dependencies.Google.material)
-    implementation(Dependencies.Androidx.Compose.ui)
-    implementation(Dependencies.Androidx.Compose.material)
-    implementation(Dependencies.Androidx.Compose.toolingPreview)
+
+    // Lifecycle
     implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
-    implementation(Dependencies.Androidx.Compose.activity)
+
+    // Test
     testImplementation(Dependencies.Junit.junit)
     androidTestImplementation(Dependencies.Androidx.junit)
     androidTestImplementation(Dependencies.Androidx.espresso)
+
+    // Compose
+    implementation(Dependencies.Androidx.Compose.ui)
+    implementation(Dependencies.Androidx.Compose.material)
+    implementation(Dependencies.Androidx.Compose.toolingPreview)
+    implementation(Dependencies.Androidx.Compose.activity)
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
     debugImplementation(Dependencies.Androidx.Compose.tooling)
+
+    // Room
+    implementation(Dependencies.Androidx.Room.runtime)
+    kapt(Dependencies.Androidx.Room.compiler)
+    implementation(Dependencies.Androidx.Room.ktx)
+
+    // Retrofit
+    implementation(Dependencies.Retrofit.retrofit)
 }

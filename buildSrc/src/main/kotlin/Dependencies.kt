@@ -18,6 +18,12 @@ object Dependencies {
         object Lifecycle {
             const val runtimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeKtx}"
         }
+
+        object Room {
+            const val runtime = "androidx.room:room-runtime:${Versions.room}"
+            const val compiler = "androidx.room:room-compiler:${Versions.room}"
+            const val ktx = "androidx.room:room-ktx:${Versions.room}"
+        }
     }
 
     object Google {
@@ -26,6 +32,10 @@ object Dependencies {
 
     object Junit {
         const val junit = "junit:junit:${Versions.junit}"
+    }
+
+    object Retrofit {
+        const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
     }
 
 }
