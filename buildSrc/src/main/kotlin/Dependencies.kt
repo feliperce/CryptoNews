@@ -37,6 +37,7 @@ object Dependencies {
     object Square {
         const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
         const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okhttp}"
+        const val gsonConverter = "com.squareup.retrofit2:converter-gson:${Versions.gsonConverter}"
         const val okHttp = "com.squareup.okhttp3:okhttp"
         const val okHttpLogging = "com.squareup.okhttp3:logging-interceptor"
     }
@@ -45,4 +46,13 @@ object Dependencies {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     }
 
+    object Koil {
+        const val koil = "io.coil-kt:coil:${Versions.koil}"
+    }
+
+    object Koin {
+        const val koin = "io.insert-koin:koin-android:${Versions.koin}"
+        const val workmanager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
+        const val compose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
+    }
 }

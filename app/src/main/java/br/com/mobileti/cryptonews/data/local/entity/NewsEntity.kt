@@ -19,7 +19,7 @@ data class ArticleEntity(
 @Entity(tableName = "news")
 data class NewsEntity(
     @PrimaryKey(autoGenerate = true) val newsId: Long = 0,
-    //val articles: List<ArticleEntity?>?,
+    //val articles: List<ArticleEntity>?,
     val status: String?,
     val totalResults: Int?
 )

@@ -12,7 +12,10 @@ object Versions {
     const val androidxJunit = "1.1.3"
     const val espressoCore = "3.4.0"
     const val retrofit = "2.9.0"
+    const val gsonConverter = "2.5.0"
     const val room = "2.3.0"
     const val okhttp = "4.9.3"
     const val coroutines = "1.3.9"
+    const val koil = "1.4.0"
+    const val koin = "3.1.4"
 }

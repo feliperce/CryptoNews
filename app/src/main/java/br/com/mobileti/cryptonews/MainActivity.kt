@@ -37,7 +37,10 @@ class MainActivity : ComponentActivity() {
                         Greeting("Android")
                         Button(onClick = {
                             GlobalScope.launch(Dispatchers.IO) {
-                                db.newsDao().insertNewsWithArticles(
+
+
+
+                                /*db.newsDao().insertNewsWithArticles(
                                     newsEntity = NewsEntity(
                                         status = "status",
                                         totalResults = 1000
@@ -54,7 +57,7 @@ class MainActivity : ComponentActivity() {
                                             source = SourceEntity(id = "dasdas", name = "das")
                                         )
                                     )
-                                )
+                                )*/
                             }
 
                         }) {

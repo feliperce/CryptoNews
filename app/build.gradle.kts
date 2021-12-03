@@ -88,6 +88,7 @@ dependencies {
 
     // Retrofit
     implementation(Dependencies.Square.retrofit)
+    implementation(Dependencies.Square.gsonConverter)
     // okhttp
     implementation(platform(Dependencies.Square.okHttpBom))
     implementation(Dependencies.Square.okHttp)
@@ -95,4 +96,12 @@ dependencies {
 
     // Coroutines
     implementation(Dependencies.Jetbrains.coroutines)
+
+    // Koil
+    implementation(Dependencies.Koil.koil)
+
+    // Koin
+    implementation(Dependencies.Koin.koin)
+    implementation(Dependencies.Koin.workmanager)
+    implementation(Dependencies.Koin.compose)
 }

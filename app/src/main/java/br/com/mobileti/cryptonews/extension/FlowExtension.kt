@@ -13,10 +13,11 @@ import retrofit2.Response
 import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
-suspend fun <LOCAL, REMOTE> FlowCollector<Resource<LOCAL>>.syncData(
+suspend fun <MAPPER, LOCAL, REMOTE> FlowCollector<Resource<MAPPER>>.syncData(
     local: () -> LOCAL,
     remote: () -> Response<REMOTE>,
     onRemote: (REMOTE?) -> LOCAL,
+    mapper: (LOCAL?) -> MAPPER,
     shouldFetchFromRemote: (LOCAL?) -> Boolean,
     onFinish: () -> Unit = { },
     onException: (error: Throwable) -> Unit? = { }
@@ -39,12 +40,12 @@ suspend fun <LOCAL, REMOTE> FlowCollector<Resource<LOCAL>>.syncData(
                     newLocalData = onRemote(remoteData)
                 }
 
-                emit(Resource.success(newLocalData))
+                emit(Resource.success(mapper(newLocalData)))
             } else {
                 emit(Resource.error(GenericException(R.string.error_generic)))
             }
         } else {
-            emit(Resource.success(localData))
+            emit(Resource.success(mapper(localData)))
         }
     }.onFailure {
         when (it) {
