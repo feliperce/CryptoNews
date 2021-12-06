@@ -14,15 +14,18 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
 suspend fun <MAPPER, LOCAL, REMOTE> FlowCollector<Resource<MAPPER>>.syncData(
-    local: () -> LOCAL,
-    remote: () -> Response<REMOTE>,
-    onRemote: (REMOTE?) -> LOCAL,
+    local: suspend () -> LOCAL,
+    remote: suspend () -> Response<REMOTE>,
+    onRemote: suspend (REMOTE?) -> LOCAL,
     mapper: (LOCAL?) -> MAPPER,
     shouldFetchFromRemote: (LOCAL?) -> Boolean,
     onFinish: () -> Unit = { },
     onException: (error: Throwable) -> Unit? = { }
 ) {
     runCatching {
+
+        emit(Resource.loading(true))
+
         var localData: LOCAL?
 
         withContext(Dispatchers.IO) {
@@ -48,6 +51,8 @@ suspend fun <MAPPER, LOCAL, REMOTE> FlowCollector<Resource<MAPPER>>.syncData(
             emit(Resource.success(mapper(localData)))
         }
     }.onFailure {
+        emit(Resource.loading(false))
+
         when (it) {
             is UnknownHostException -> {
                 emit(Resource.error(NoConnectionException(R.string.no_connection)))
@@ -62,6 +67,7 @@ suspend fun <MAPPER, LOCAL, REMOTE> FlowCollector<Resource<MAPPER>>.syncData(
             }
         }
     }.onSuccess {
+        emit(Resource.loading(false))
         onFinish()
     }
 }
