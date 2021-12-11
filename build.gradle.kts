@@ -18,7 +18,3 @@ buildscript {
 tasks.register("clean", Delete::class){
     delete(rootProject.buildDir)
 }
-
-tasks.register("checkApi") {
-    val key: String = gradleLocalProperties(rootDir).getProperty("api") ?: "EMPTY_KEY"
-}
