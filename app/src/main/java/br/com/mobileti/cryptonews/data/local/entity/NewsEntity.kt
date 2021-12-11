@@ -13,7 +13,7 @@ data class ArticleEntity(
     val title: String?,
     val url: String?,
     @ColumnInfo(name = "image_url") val urlToImage: String?,
-    @Embedded val source: SourceEntity
+    @Embedded val source: SourceEntity?
 )
 
 @Entity(tableName = "news")

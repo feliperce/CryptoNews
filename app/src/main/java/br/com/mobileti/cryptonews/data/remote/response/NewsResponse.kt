@@ -1,7 +1,7 @@
 package br.com.mobileti.cryptonews.data.remote.response
 
 data class NewsResponse(
-    val articles: List<ArticleResponse?>?,
+    val articles: List<ArticleResponse>?,
     val status: String?,
     val totalResults: Int?
 )

@@ -37,3 +37,8 @@ fun NewsWithArticles.toCurrentNews() =
         news = news.toNews(),
         articles = articles.toArticleList()
     )
+
+fun List<NewsWithArticles>.toCurrentNewsList() =
+    map {
+        it.toCurrentNews()
+    }
