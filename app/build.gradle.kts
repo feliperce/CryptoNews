@@ -7,7 +7,7 @@ plugins {
     kotlin("kapt")
 }
 
-val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
+val apiKey: String = gradleLocalProperties(rootDir).getProperty("api") ?: "EMPTY_KEY"
 val endpointDebugUrl = "https://newsapi.org/v2/"
 val endpointReleaseUrl = "https://newsapi.org/v2/"
 
