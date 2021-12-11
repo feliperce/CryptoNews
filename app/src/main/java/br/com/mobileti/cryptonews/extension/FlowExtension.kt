@@ -1,7 +1,6 @@
 package br.com.mobileti.cryptonews.extension
 
 import br.com.mobileti.cryptonews.R
-import br.com.mobileti.cryptonews.data.DataPolicy
 import br.com.mobileti.cryptonews.data.Resource
 import br.com.mobileti.cryptonews.data.Status
 import br.com.mobileti.cryptonews.data.exception.ConnectionTimeoutException

@@ -1,6 +1,7 @@
 package br.com.mobileti.cryptonews
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -15,12 +16,18 @@ import br.com.mobileti.cryptonews.data.local.db.NewsDb
 import br.com.mobileti.cryptonews.data.local.entity.ArticleEntity
 import br.com.mobileti.cryptonews.data.local.entity.NewsEntity
 import br.com.mobileti.cryptonews.data.local.entity.SourceEntity
+import br.com.mobileti.cryptonews.feature.home.repository.HomeRepository
 import br.com.mobileti.cryptonews.ui.theme.CryptoNewsTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
+
+    private val repository: HomeRepository by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -28,17 +35,19 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column() {
-                        val db = Room.databaseBuilder(
+                        /*val db = Room.databaseBuilder(
                             this@MainActivity,
                             NewsDb::class.java, "CryptoNews"
-                        ).build()
+                        ).build()*/
 
 
                         Greeting("Android")
                         Button(onClick = {
                             GlobalScope.launch(Dispatchers.IO) {
 
-
+                                repository.getCurrentNews().collect {
+                                    Log.d("AAAAAA", "${it.data}")
+                                }
 
                                 /*db.newsDao().insertNewsWithArticles(
                                     newsEntity = NewsEntity(
