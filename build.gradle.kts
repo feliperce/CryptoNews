@@ -20,5 +20,5 @@ tasks.register("clean", Delete::class){
 }
 
 tasks.register("checkApi") {
-    val key: String = gradleLocalProperties(rootDir).getProperty("api")
+    val key: String = gradleLocalProperties(rootDir).getProperty("api") ?: "EMPTY_KEY"
 }
