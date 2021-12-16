@@ -9,7 +9,7 @@ data class Article(
     val publishedAt: String,
     val title: String,
     val url: String,
-    val urlToImage: String,
+    val urlToImage: String
 )
 
 data class News(
