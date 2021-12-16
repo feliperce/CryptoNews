@@ -1,7 +1,6 @@
 package br.com.mobileti.cryptonews.feature.home.repository
 
 import br.com.mobileti.cryptonews.data.Resource
-import br.com.mobileti.cryptonews.data.Status
 import br.com.mobileti.cryptonews.data.local.dao.NewsDao
 import br.com.mobileti.cryptonews.data.local.entity.NewsWithArticles
 import br.com.mobileti.cryptonews.data.remote.mapper.toArticleEntityList
@@ -34,8 +33,8 @@ class HomeRepository(
         emitAll(sync)
 
     }.transform {
-        if (it.status == Status.Success) {
-            emit(Resource.success(it.data?.toCurrentNewsList()))
+        if (it is Resource.Success) {
+            emit(Resource.Success(it.data?.toCurrentNewsList()))
         } else {
             emit(it)
         }
