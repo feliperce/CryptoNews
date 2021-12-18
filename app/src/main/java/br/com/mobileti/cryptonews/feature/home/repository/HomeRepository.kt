@@ -7,20 +7,20 @@ import br.com.mobileti.cryptonews.data.remote.mapper.toArticleEntityList
 import br.com.mobileti.cryptonews.data.remote.mapper.toNewsEntity
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
 import br.com.mobileti.cryptonews.extension.syncData
+import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.mapper.toCurrentNewsList
-import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.*
 
 class HomeRepository(
     private val newsDao: NewsDao,
     private val newsService: NewsService
 ) {
 
-    fun getCurrentNews() = flow<Resource<List<NewsWithArticles>>> {
+    fun getCurrentNews() = flow<Resource<List<CurrentNews>>> {
         val sync = syncData(
             local = { newsDao.getNewsWithArticle() },
             remote = { newsService.getCurrentNews() },
+            mapper = { it?.toCurrentNewsList().orEmpty() },
             onRemote = {
                 newsDao.insertNewsWithArticles(
                     it.toNewsEntity(),
@@ -32,12 +32,6 @@ class HomeRepository(
 
         emitAll(sync)
 
-    }.transform {
-        if (it is Resource.Success) {
-            emit(Resource.Success(it.data?.toCurrentNewsList()))
-        } else {
-            emit(it)
-        }
     }
 
 }

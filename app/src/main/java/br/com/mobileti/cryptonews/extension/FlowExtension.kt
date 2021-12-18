@@ -13,14 +13,15 @@ import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
 
 
-inline fun <reified REMOTE, LOCAL> syncData(
+inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
     crossinline local: suspend () -> LOCAL,
     crossinline remote: suspend () -> Response<REMOTE>,
+    crossinline mapper: suspend (LOCAL?) -> MAPPER,
     crossinline onRemote: suspend (REMOTE) -> Unit,
-    crossinline shouldFetchFromRemote: (data: LOCAL?) -> Boolean,
+    crossinline shouldFetchFromRemote: suspend (data: LOCAL?) -> Boolean,
     crossinline onFinish: () -> Unit = { },
     crossinline onException: (error: Throwable) -> Unit? = { }
-) = flow<Resource<LOCAL>> {
+) = flow<Resource<MAPPER>> {
 
     val localData: LOCAL? = local()
 
@@ -37,7 +38,7 @@ inline fun <reified REMOTE, LOCAL> syncData(
                     local()
                 }
 
-                emit(Resource.Success(newLocalData))
+                emit(Resource.Success(mapper(newLocalData)))
             } else {
                 emit(Resource.Error(GenericException(R.string.error_generic)))
             }
@@ -45,7 +46,7 @@ inline fun <reified REMOTE, LOCAL> syncData(
             emit(Resource.Error(GenericException(R.string.error_generic)))
         }
     } else {
-        emit(Resource.Success(localData))
+        emit(Resource.Success(mapper(localData)))
     }
 
 }.catch {
@@ -65,4 +66,16 @@ inline fun <reified REMOTE, LOCAL> syncData(
 }.onCompletion {
     emit(Resource.Loading(false))
     onFinish()
+}
+
+
+inline fun <reified REMOTE, LOCAL> aaa(
+    crossinline local: suspend () -> LOCAL,
+    crossinline remote: suspend () -> Response<REMOTE>,
+    crossinline onRemote: suspend (REMOTE) -> Unit,
+    crossinline shouldFetchFromRemote: suspend (data: LOCAL?) -> Boolean,
+    crossinline onFinish: () -> Unit = { },
+    crossinline onException: (error: Throwable) -> Unit? = { }
+) = flow<Resource<LOCAL>> {
+
 }

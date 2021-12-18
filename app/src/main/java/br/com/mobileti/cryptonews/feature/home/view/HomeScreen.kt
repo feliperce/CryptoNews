@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -15,16 +14,54 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.mobileti.cryptonews.R
-import br.com.mobileti.cryptonews.feature.home.entity.Article
+import br.com.mobileti.cryptonews.feature.home.mapper.Article
+import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
+import br.com.mobileti.cryptonews.feature.home.state.HomeIntent
+import br.com.mobileti.cryptonews.feature.home.viewmodel.HomeViewModel
 import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
 import br.com.mobileti.cryptonews.ui.theme.HomeImageSize
 import br.com.mobileti.cryptonews.ui.theme.MarginPaddingSizeMedium
 import br.com.mobileti.cryptonews.ui.theme.Typography
-
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    homeViewModel: HomeViewModel = getViewModel()
+) {
+    val homeUiState by homeViewModel.homeState.collectAsState()
+    var showProgressState by remember { mutableStateOf(false)  }
 
+    val scaffoldState = rememberScaffoldState()
+
+    LaunchedEffect(homeViewModel.intentChannel) {
+        homeViewModel.intentChannel.send(
+            HomeIntent.GetCurrentNews
+        )
+    }
+
+    Home(
+        scaffoldState = scaffoldState,
+        articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf()
+    )
+
+}
+
+@Composable
+fun Home(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    articles: List<Article>
+) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            HomeAppBar()
+        },
+        content = {
+            NewsItemList(articles = articles)
+        }
+    )
 }
 
 @Composable
@@ -89,6 +126,11 @@ fun NewsItem(
 }
 
 @Composable
+fun HomeAppBar() {
+    CryptoNewsAppBar(title = R.string.app_name)
+}
+
+@Composable
 @Preview(showBackground = true)
 fun NewsItemListPreview() {
     NewsItemList(fakeNewsList)
@@ -106,8 +148,14 @@ fun NewsItemPreview() {
 
 @Composable
 @Preview
-fun HomeAppBar() {
+fun HomeAppBarPreview() {
     CryptoNewsAppBar(title = R.string.app_name)
+}
+
+@Composable
+@Preview
+fun HomePreview() {
+    Home(articles = fakeNewsList)
 }
 
 private val fakeNewsList = listOf(
