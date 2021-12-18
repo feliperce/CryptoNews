@@ -33,7 +33,7 @@ data class NewsWithArticles(
     @Embedded val news: NewsEntity,
     @Relation(
         parentColumn = "newsId",
-        entityColumn = "articleId"
+        entityColumn = "newsId"
     )
     val articles: List<ArticleEntity>
 )
