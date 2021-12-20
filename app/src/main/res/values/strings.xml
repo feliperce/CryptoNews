@@ -6,4 +6,5 @@
     <string name="no_connection">Ocorreu um erro, verifique sua conexão com a internet.</string>
     <string name="error_timeout">O serviço está temporariamente indisponível, tente novamente mais tarde</string>
     <string name="error_empty_api">Precisa informar sua API Key</string>
+    <string name="error_auth">Você deve informar uma chave API em local.properties</string>
 </resources>
