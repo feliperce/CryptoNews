@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +23,7 @@ import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
 import br.com.mobileti.cryptonews.ui.theme.HomeImageSize
 import br.com.mobileti.cryptonews.ui.theme.MarginPaddingSizeMedium
 import br.com.mobileti.cryptonews.ui.theme.Typography
+import coil.compose.rememberImagePainter
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -73,7 +75,8 @@ fun NewsItemList(
             NewsItem(
                 title = it.title,
                 description = it.description,
-                newsDate = it.publishedAt
+                newsDate = it.publishedAt,
+                imageUrl = it.urlToImage
             )
             Divider(color = Color.Black, thickness = 1.dp)
         }
@@ -84,7 +87,8 @@ fun NewsItemList(
 fun NewsItem(
     title: String,
     description: String,
-    newsDate: String
+    newsDate: String,
+    imageUrl: String
 ) {
     Row(
         modifier = Modifier
@@ -92,11 +96,15 @@ fun NewsItem(
             .padding(MarginPaddingSizeMedium)
     ) {
 
-        val painter = painterResource(id = R.drawable.ic_launcher_foreground)
         Image(
-            modifier = Modifier.size(HomeImageSize),
-            painter = painter,
-            contentDescription = ""
+            modifier = Modifier
+                .size(HomeImageSize)
+                .padding(
+                    end = MarginPaddingSizeMedium
+                ),
+            painter = rememberImagePainter(imageUrl),
+            contentDescription = "",
+            contentScale = ContentScale.Crop
         )
         Column {
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
@@ -142,7 +150,8 @@ fun NewsItemPreview() {
     NewsItem(
         title = "Noticia bla bla bla bla bla",
         description = "Descrição bla bla bla bla bla bla bla bla",
-        newsDate = "10/05/1990"
+        newsDate = "10/05/1990",
+        imageUrl = ""
     )
 }
 

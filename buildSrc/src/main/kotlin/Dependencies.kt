@@ -46,8 +46,9 @@ object Dependencies {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     }
 
-    object Koil {
-        const val koil = "io.coil-kt:coil:${Versions.koil}"
+    object Coil {
+        const val coil = "io.coil-kt:coil:${Versions.coil}"
+        const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
     }
 
     object Koin {

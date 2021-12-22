@@ -7,7 +7,7 @@ plugins {
     kotlin("kapt")
 }
 
-val apiKey: String = gradleLocalProperties(rootDir).getProperty("api") ?: "EMPTY_KEY"
+val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey") ?: "EMPTY_KEY"
 val endpointDebugUrl = "https://newsapi.org/v2/"
 val endpointReleaseUrl = "https://newsapi.org/v2/"
 
@@ -98,7 +98,8 @@ dependencies {
     implementation(Dependencies.Jetbrains.coroutines)
 
     // Koil
-    implementation(Dependencies.Koil.koil)
+    implementation(Dependencies.Coil.coil)
+    implementation(Dependencies.Coil.coilCompose)
 
     // Koin
     implementation(Dependencies.Koin.koin)
