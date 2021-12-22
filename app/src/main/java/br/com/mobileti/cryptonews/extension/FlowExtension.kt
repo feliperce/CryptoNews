@@ -66,6 +66,8 @@ inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
 }.onCompletion {
     emit(Resource.Loading(false))
     onFinish()
+}.onStart {
+    emit(Resource.Loading(true))
 }
 
 

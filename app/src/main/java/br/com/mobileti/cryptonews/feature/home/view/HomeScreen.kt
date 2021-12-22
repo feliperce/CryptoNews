@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -33,7 +34,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = getViewModel()
 ) {
     val homeUiState by homeViewModel.homeState.collectAsState()
-    var showProgressState by remember { mutableStateOf(false)  }
+    var showProgress by remember { mutableStateOf(false)  }
 
     val scaffoldState = rememberScaffoldState()
 
@@ -43,9 +44,12 @@ fun HomeScreen(
         )
     }
 
+    showProgress = homeUiState.loading
+
     Home(
         scaffoldState = scaffoldState,
-        articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf()
+        articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
+        showProgress = showProgress
     )
 
 }
@@ -53,7 +57,8 @@ fun HomeScreen(
 @Composable
 fun Home(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    articles: List<Article>
+    articles: List<Article>,
+    showProgress: Boolean
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -61,6 +66,14 @@ fun Home(
             HomeAppBar()
         },
         content = {
+            if (showProgress) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
             NewsItemList(articles = articles)
         }
     )
@@ -164,7 +177,7 @@ fun HomeAppBarPreview() {
 @Composable
 @Preview
 fun HomePreview() {
-    Home(articles = fakeNewsList)
+    Home(articles = fakeNewsList, showProgress = true)
 }
 
 private val fakeNewsList = listOf(

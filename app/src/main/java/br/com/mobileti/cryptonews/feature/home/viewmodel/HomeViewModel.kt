@@ -15,9 +15,6 @@ class HomeViewModel(
 ) : ViewModel() {
 
     val intentChannel = Channel<HomeIntent>(Channel.UNLIMITED)
-    /*private val _homeState = MutableStateFlow<HomeState>(HomeState.Idle)
-    val homeState: StateFlow<HomeState>
-        get() = _homeState*/
 
     private val _homeState = MutableStateFlow(HomeUiState(loading = false))
     val homeState: StateFlow<HomeUiState> = _homeState.asStateFlow()
