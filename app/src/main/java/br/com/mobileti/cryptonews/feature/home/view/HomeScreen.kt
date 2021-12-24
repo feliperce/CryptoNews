@@ -13,9 +13,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import br.com.mobileti.cryptonews.R
+import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
 import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.state.HomeIntent
@@ -131,12 +133,16 @@ fun NewsItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = description,
-                    style = Typography.subtitle1
+                    style = Typography.subtitle1,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.fillMaxWidth())
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = newsDate,
+                    text = newsDate.toFormattedDateString(
+                        "yyyy-MM-dd'T'HH:mm:ss'Z'", "dd/MM/yyyy"
+                    ),
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.End,
                     style = Typography.body2
@@ -187,7 +193,7 @@ private val fakeNewsList = listOf(
         author = "Satoshi Nakamoto",
         content = "Lero lero lero lero lero lero",
         description = "Lero lero lero lero lero lero lero lero lero lero lero",
-        publishedAt = "10/11/2008",
+        publishedAt = "2021-11-26T01:35:06Z",
         title = "Noticia Titulo",
         url = "http://bitcoin.org",
         urlToImage = ""
@@ -198,7 +204,7 @@ private val fakeNewsList = listOf(
         author = "Satoshi Nakamoto 2",
         content = "Lero lero lero lero lero lero",
         description = "Lero lero lero",
-        publishedAt = "10/11/2008",
+        publishedAt = "2021-11-26T01:35:06Z",
         title = "Noticia Titulo",
         url = "http://bitcoin.org",
         urlToImage = ""
@@ -208,8 +214,9 @@ private val fakeNewsList = listOf(
         newsId = 0,
         author = "Satoshi Nakamoto 4",
         content = "Lero lero",
-        description = "Lero lero lero lero lero lero lero lero lero lero lero lero lero lero lero",
-        publishedAt = "10/11/2008",
+        description = """Lero lero lero lero lero lero lero lero lero lero lero lero lero lero lero 
+            |lero lero lero lero""".trimMargin(),
+        publishedAt = "2021-11-26T01:35:06Z",
         title = "Noticia Titulo",
         url = "http://bitcoin.org",
         urlToImage = ""
