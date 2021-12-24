@@ -29,9 +29,25 @@ class HomeRepository(
             },
             shouldFetchFromRemote = { it?.isEmpty() ?: true }
         )
-
         emitAll(sync)
+    }
 
+    fun refreshNews() = flow<Resource<List<CurrentNews>>> {
+        val sync = syncData(
+            local = { newsDao.getNewsWithArticle() },
+            remote = { newsService.getCurrentNews() },
+            mapper = { it?.toCurrentNewsList().orEmpty() },
+            onRemote = {
+                newsDao.insertNewsWithArticles(
+                    it.toNewsEntity(),
+                    it.articles?.toArticleEntityList() ?: arrayListOf()
+                )
+            },
+            shouldFetchFromRemote = { true }
+        ).onStart {
+            newsDao.removeNewsCache()
+        }
+        emitAll(sync)
     }
 
 }

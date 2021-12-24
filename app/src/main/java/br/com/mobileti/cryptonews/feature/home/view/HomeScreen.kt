@@ -1,5 +1,6 @@
 package br.com.mobileti.cryptonews.feature.home.view
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,6 +29,8 @@ import br.com.mobileti.cryptonews.ui.theme.HomeImageSize
 import br.com.mobileti.cryptonews.ui.theme.MarginPaddingSizeMedium
 import br.com.mobileti.cryptonews.ui.theme.Typography
 import coil.compose.rememberImagePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -37,6 +41,7 @@ fun HomeScreen(
 ) {
     val homeUiState by homeViewModel.homeState.collectAsState()
     var showProgress by remember { mutableStateOf(false)  }
+    var isRefreshing by remember { mutableStateOf(false)  }
 
     val scaffoldState = rememberScaffoldState()
 
@@ -51,7 +56,9 @@ fun HomeScreen(
     Home(
         scaffoldState = scaffoldState,
         articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
-        showProgress = showProgress
+        showProgress = showProgress,
+        isRefreshing = isRefreshing,
+        onRefresh = { homeViewModel.refreshNews() }
     )
 
 }
@@ -60,7 +67,9 @@ fun HomeScreen(
 fun Home(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     articles: List<Article>,
-    showProgress: Boolean
+    showProgress: Boolean,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -76,24 +85,35 @@ fun Home(
                     CircularProgressIndicator()
                 }
             }
-            NewsItemList(articles = articles)
+            NewsItemList(
+                articles = articles,
+                isRefreshing = isRefreshing,
+                onRefresh = { onRefresh() }
+            )
         }
     )
 }
 
 @Composable
 fun NewsItemList(
-    articles: List<Article>
+    articles: List<Article>,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit
 ) {
-    LazyColumn {
-        items(articles) {
-            NewsItem(
-                title = it.title,
-                description = it.description,
-                newsDate = it.publishedAt,
-                imageUrl = it.urlToImage
-            )
-            Divider(color = Color.Black, thickness = 1.dp)
+    SwipeRefresh(
+        state = rememberSwipeRefreshState(isRefreshing),
+        onRefresh = { onRefresh() },
+    ) {
+        LazyColumn {
+            items(articles) {
+                NewsItem(
+                    title = it.title,
+                    description = it.description,
+                    newsDate = it.publishedAt,
+                    imageUrl = it.urlToImage
+                )
+                Divider(color = Color.Black, thickness = 1.dp)
+            }
         }
     }
 }
@@ -141,7 +161,8 @@ fun NewsItem(
                 Text(
                     modifier = Modifier.fillMaxWidth(),
                     text = newsDate.toFormattedDateString(
-                        "yyyy-MM-dd'T'HH:mm:ss'Z'", "dd/MM/yyyy"
+                        stringResource(id = R.string.date_service_pattern), 
+                        stringResource(id = R.string.date_home_pattern)
                     ),
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.End,
@@ -160,7 +181,7 @@ fun HomeAppBar() {
 @Composable
 @Preview(showBackground = true)
 fun NewsItemListPreview() {
-    NewsItemList(fakeNewsList)
+    NewsItemList(fakeNewsList, false, {})
 }
 
 @Composable
@@ -183,7 +204,12 @@ fun HomeAppBarPreview() {
 @Composable
 @Preview
 fun HomePreview() {
-    Home(articles = fakeNewsList, showProgress = true)
+    Home(
+        articles = fakeNewsList,
+        showProgress = true,
+        isRefreshing = false,
+        onRefresh = {}
+    )
 }
 
 private val fakeNewsList = listOf(

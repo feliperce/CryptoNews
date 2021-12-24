@@ -23,6 +23,30 @@ class HomeViewModel(
         handleIntents()
     }
 
+    fun refreshNews() {
+        viewModelScope.launch {
+            homeRepository.refreshNews().collect { res ->
+                when(res) {
+                    is Resource.Loading -> {
+                        _homeState.update {
+                            it.copy(loading = res.isLoading)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _homeState.update {
+                            it.copy(error = res.error)
+                        }
+                    }
+                    is Resource.Success -> {
+                        _homeState.update {
+                            it.copy(currentNews = res.data ?: listOf())
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun handleIntents() {
         intentChannel
             .consumeAsFlow()

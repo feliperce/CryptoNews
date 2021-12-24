@@ -28,6 +28,10 @@ object Dependencies {
 
     object Google {
         const val material = "com.google.android.material:material:${Versions.material}"
+
+        object Accompanist {
+            const val swipRefresh = "com.google.accompanist:accompanist-swiperefresh:${Versions.accompanist}"
+        }
     }
 
     object Junit {

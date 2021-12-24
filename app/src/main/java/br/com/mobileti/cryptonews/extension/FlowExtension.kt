@@ -69,15 +69,3 @@ inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
 }.onStart {
     emit(Resource.Loading(true))
 }
-
-
-inline fun <reified REMOTE, LOCAL> aaa(
-    crossinline local: suspend () -> LOCAL,
-    crossinline remote: suspend () -> Response<REMOTE>,
-    crossinline onRemote: suspend (REMOTE) -> Unit,
-    crossinline shouldFetchFromRemote: suspend (data: LOCAL?) -> Boolean,
-    crossinline onFinish: () -> Unit = { },
-    crossinline onException: (error: Throwable) -> Unit? = { }
-) = flow<Resource<LOCAL>> {
-
-}
