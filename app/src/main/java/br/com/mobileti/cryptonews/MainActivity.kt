@@ -17,6 +17,7 @@ import br.com.mobileti.cryptonews.data.local.entity.ArticleEntity
 import br.com.mobileti.cryptonews.data.local.entity.NewsEntity
 import br.com.mobileti.cryptonews.data.local.entity.SourceEntity
 import br.com.mobileti.cryptonews.feature.home.repository.HomeRepository
+import br.com.mobileti.cryptonews.feature.home.view.HomeScreen
 import br.com.mobileti.cryptonews.ui.theme.CryptoNewsTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,11 +35,12 @@ class MainActivity : ComponentActivity() {
             CryptoNewsTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Column() {
-                        /*val db = Room.databaseBuilder(
+                    HomeScreen()
+                    /*Column() {
+                        *//*val db = Room.databaseBuilder(
                             this@MainActivity,
                             NewsDb::class.java, "CryptoNews"
-                        ).build()*/
+                        ).build()*//*
 
 
                         Greeting("Android")
@@ -49,7 +51,7 @@ class MainActivity : ComponentActivity() {
                                     Log.d("AAAAAA", "${it.data}")
                                 }
 
-                                /*db.newsDao().insertNewsWithArticles(
+                                *//*db.newsDao().insertNewsWithArticles(
                                     newsEntity = NewsEntity(
                                         status = "status",
                                         totalResults = 1000
@@ -66,7 +68,7 @@ class MainActivity : ComponentActivity() {
                                             source = SourceEntity(id = "dasdas", name = "das")
                                         )
                                     )
-                                )*/
+                                )*//*
                             }
 
                         }) {
@@ -77,22 +79,9 @@ class MainActivity : ComponentActivity() {
                         }) {
                             Text(text = "READ")
                         }
-                    }
+                    }*/
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CryptoNewsTheme {
-        Greeting("Android")
     }
 }

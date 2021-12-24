@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.feature.home.entity
+package br.com.mobileti.cryptonews.feature.home.mapper
 
 data class Article(
     val articleId: Long,

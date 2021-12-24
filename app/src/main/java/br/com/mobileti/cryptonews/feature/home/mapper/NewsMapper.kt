@@ -3,9 +3,6 @@ package br.com.mobileti.cryptonews.feature.home.mapper
 import br.com.mobileti.cryptonews.data.local.entity.ArticleEntity
 import br.com.mobileti.cryptonews.data.local.entity.NewsEntity
 import br.com.mobileti.cryptonews.data.local.entity.NewsWithArticles
-import br.com.mobileti.cryptonews.feature.home.entity.Article
-import br.com.mobileti.cryptonews.feature.home.entity.CurrentNews
-import br.com.mobileti.cryptonews.feature.home.entity.News
 
 fun ArticleEntity.toArticle() =
     Article(
