@@ -1,6 +1,5 @@
 package br.com.mobileti.cryptonews.feature.home.view
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,7 +10,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -21,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
-import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.state.HomeIntent
 import br.com.mobileti.cryptonews.feature.home.viewmodel.HomeViewModel
 import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
@@ -31,8 +28,6 @@ import br.com.mobileti.cryptonews.ui.theme.Typography
 import coil.compose.rememberImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -41,7 +36,6 @@ fun HomeScreen(
 ) {
     val homeUiState by homeViewModel.homeState.collectAsState()
     var showProgress by remember { mutableStateOf(false)  }
-    var isRefreshing by remember { mutableStateOf(false)  }
 
     val scaffoldState = rememberScaffoldState()
 
@@ -57,18 +51,16 @@ fun HomeScreen(
         scaffoldState = scaffoldState,
         articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
         showProgress = showProgress,
-        isRefreshing = isRefreshing,
         onRefresh = { homeViewModel.refreshNews() }
     )
 
 }
 
 @Composable
-fun Home(
+private fun Home(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     articles: List<Article>,
     showProgress: Boolean,
-    isRefreshing: Boolean,
     onRefresh: () -> Unit
 ) {
     Scaffold(
@@ -87,7 +79,6 @@ fun Home(
             }
             NewsItemList(
                 articles = articles,
-                isRefreshing = isRefreshing,
                 onRefresh = { onRefresh() }
             )
         }
@@ -95,13 +86,12 @@ fun Home(
 }
 
 @Composable
-fun NewsItemList(
+private fun NewsItemList(
     articles: List<Article>,
-    isRefreshing: Boolean,
     onRefresh: () -> Unit
 ) {
     SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
+        state = rememberSwipeRefreshState(false),
         onRefresh = { onRefresh() },
     ) {
         LazyColumn {
@@ -119,7 +109,7 @@ fun NewsItemList(
 }
 
 @Composable
-fun NewsItem(
+private fun NewsItem(
     title: String,
     description: String,
     newsDate: String,
@@ -174,19 +164,19 @@ fun NewsItem(
 }
 
 @Composable
-fun HomeAppBar() {
+private fun HomeAppBar() {
     CryptoNewsAppBar(title = R.string.app_name)
 }
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItemListPreview() {
-    NewsItemList(fakeNewsList, false, {})
+private fun NewsItemListPreview() {
+    NewsItemList(fakeNewsList, {})
 }
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItemPreview() {
+private fun NewsItemPreview() {
     NewsItem(
         title = "Noticia bla bla bla bla bla",
         description = "Descrição bla bla bla bla bla bla bla bla",
@@ -197,17 +187,16 @@ fun NewsItemPreview() {
 
 @Composable
 @Preview
-fun HomeAppBarPreview() {
+private fun HomeAppBarPreview() {
     CryptoNewsAppBar(title = R.string.app_name)
 }
 
 @Composable
 @Preview
-fun HomePreview() {
+private fun HomePreview() {
     Home(
         articles = fakeNewsList,
         showProgress = true,
-        isRefreshing = false,
         onRefresh = {}
     )
 }
