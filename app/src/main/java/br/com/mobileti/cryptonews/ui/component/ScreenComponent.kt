@@ -10,12 +10,12 @@ import br.com.mobileti.cryptonews.ui.theme.Purple500
 
 @Composable
 fun CryptoNewsAppBar(
-    title: Int,
+    title: String,
     navigationIcon: @Composable() (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     TopAppBar(
-        title = { Text(stringResource(id = title)) },
+        title = { Text(title) },
         backgroundColor = Purple500,
         contentColor = White,
         navigationIcon = navigationIcon,

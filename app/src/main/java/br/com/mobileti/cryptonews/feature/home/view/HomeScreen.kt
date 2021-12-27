@@ -165,7 +165,7 @@ private fun NewsItem(
 
 @Composable
 private fun HomeAppBar() {
-    CryptoNewsAppBar(title = R.string.app_name)
+    CryptoNewsAppBar(title = stringResource(id = R.string.app_name))
 }
 
 @Composable
@@ -188,7 +188,7 @@ private fun NewsItemPreview() {
 @Composable
 @Preview
 private fun HomeAppBarPreview() {
-    CryptoNewsAppBar(title = R.string.app_name)
+    CryptoNewsAppBar(title = stringResource(id = R.string.app_name))
 }
 
 @Composable
