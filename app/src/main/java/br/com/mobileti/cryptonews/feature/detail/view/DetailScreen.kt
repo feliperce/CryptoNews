@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -18,10 +19,20 @@ import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
 import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
+import br.com.mobileti.cryptonews.ui.theme.DetailImageHeight
 import br.com.mobileti.cryptonews.ui.theme.HomeImageSize
 import br.com.mobileti.cryptonews.ui.theme.MarginPaddingSizeMedium
 import br.com.mobileti.cryptonews.ui.theme.Typography
 import coil.compose.rememberImagePainter
+
+@Composable
+fun DetailScreen() {
+    /*Scaffold(
+        topBar = {
+            DetailAppBar(title = "")
+        }
+    )*/
+}
 
 @Composable
 private fun Detail(
@@ -37,7 +48,8 @@ private fun Detail(
     ) {
         Image(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(DetailImageHeight),
             painter = rememberImagePainter(imageUrl),
             contentDescription = "",
             contentScale = ContentScale.FillBounds
