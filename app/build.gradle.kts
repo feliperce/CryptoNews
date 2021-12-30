@@ -80,6 +80,7 @@ dependencies {
     implementation(Dependencies.Androidx.Compose.activity)
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
     debugImplementation(Dependencies.Androidx.Compose.tooling)
+    implementation(Dependencies.Androidx.Compose.navHost)
     // Accompanist
     implementation(Dependencies.Google.Accompanist.swipRefresh)
 

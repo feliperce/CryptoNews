@@ -5,17 +5,25 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color.Companion.White
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import br.com.mobileti.cryptonews.ui.theme.Purple500
 
 @Composable
 fun CryptoNewsAppBar(
-    title: Int,
-    navigationIcon: @Composable() (() -> Unit)? = null,
+    title: String,
+    titleMaxLines: Int = Int.MAX_VALUE,
+    titleOverflow: TextOverflow = TextOverflow.Clip,
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null
 ) {
     TopAppBar(
-        title = { Text(stringResource(id = title)) },
+        title = {
+            Text(
+                text = title,
+                maxLines = titleMaxLines,
+                overflow = titleOverflow
+            )
+        },
         backgroundColor = Purple500,
         contentColor = White,
         navigationIcon = navigationIcon,

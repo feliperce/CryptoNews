@@ -1,86 +1,31 @@
 package br.com.mobileti.cryptonews
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.room.Room
-import br.com.mobileti.cryptonews.data.local.db.NewsDb
-import br.com.mobileti.cryptonews.data.local.entity.ArticleEntity
-import br.com.mobileti.cryptonews.data.local.entity.NewsEntity
-import br.com.mobileti.cryptonews.data.local.entity.SourceEntity
-import br.com.mobileti.cryptonews.feature.home.repository.HomeRepository
-import br.com.mobileti.cryptonews.feature.home.view.HomeScreen
+import androidx.navigation.compose.rememberNavController
+import br.com.mobileti.cryptonews.feature.detail.viewmodel.DetailViewModel
+import br.com.mobileti.cryptonews.feature.home.viewmodel.HomeViewModel
+import br.com.mobileti.cryptonews.ui.navhost.CryptoNewsNavHost
 import br.com.mobileti.cryptonews.ui.theme.CryptoNewsTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val repository: HomeRepository by inject()
+    private val homeViewModel: HomeViewModel by viewModel()
+    private val detailViewModel: DetailViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CryptoNewsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(color = MaterialTheme.colors.background) {
-                    HomeScreen()
-                    /*Column() {
-                        *//*val db = Room.databaseBuilder(
-                            this@MainActivity,
-                            NewsDb::class.java, "CryptoNews"
-                        ).build()*//*
+                val navController = rememberNavController()
 
-
-                        Greeting("Android")
-                        Button(onClick = {
-                            GlobalScope.launch(Dispatchers.IO) {
-
-                                repository.getCurrentNews().collect {
-                                    Log.d("AAAAAA", "${it.data}")
-                                }
-
-                                *//*db.newsDao().insertNewsWithArticles(
-                                    newsEntity = NewsEntity(
-                                        status = "status",
-                                        totalResults = 1000
-                                    ),
-                                    articleEntityList = listOf(
-                                        ArticleEntity(
-                                            author = "author",
-                                            content = "content",
-                                            description = "desciprtion",
-                                            publishedAt = "publishedat",
-                                            title = "title",
-                                            url = "url",
-                                            urlToImage = "urltoimgg",
-                                            source = SourceEntity(id = "dasdas", name = "das")
-                                        )
-                                    )
-                                )*//*
-                            }
-
-                        }) {
-                            Text(text = "ADD")
-                        }
-                        Button(onClick = {
-
-                        }) {
-                            Text(text = "READ")
-                        }
-                    }*/
-                }
+                CryptoNewsNavHost(
+                    navHostController = navController,
+                    homeViewModel = homeViewModel,
+                    detailViewModel = detailViewModel
+                )
             }
         }
     }

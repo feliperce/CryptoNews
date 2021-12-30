@@ -1,7 +1,7 @@
 package br.com.mobileti.cryptonews.feature.home.view
 
-import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,17 +11,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
-import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.state.HomeIntent
 import br.com.mobileti.cryptonews.feature.home.viewmodel.HomeViewModel
 import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
@@ -31,45 +31,54 @@ import br.com.mobileti.cryptonews.ui.theme.Typography
 import coil.compose.rememberImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
     homeViewModel: HomeViewModel = getViewModel()
 ) {
     val homeUiState by homeViewModel.homeState.collectAsState()
     var showProgress by remember { mutableStateOf(false)  }
-    var isRefreshing by remember { mutableStateOf(false)  }
 
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(homeViewModel.intentChannel) {
-        homeViewModel.intentChannel.send(
-            HomeIntent.GetCurrentNews
+    val oldPattern = stringResource(id = R.string.date_service_pattern)
+    val newPattern = stringResource(id = R.string.date_home_pattern)
+
+    homeViewModel.sendIntent(
+        HomeIntent.GetCurrentNews(
+            oldFormatDate = oldPattern,
+            newFormatDate = newPattern
         )
-    }
+    )
 
     showProgress = homeUiState.loading
 
     Home(
         scaffoldState = scaffoldState,
-        articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
+        articles = homeUiState.articleList,
         showProgress = showProgress,
-        isRefreshing = isRefreshing,
-        onRefresh = { homeViewModel.refreshNews() }
+        onRefresh = {
+            homeViewModel.sendIntent(
+                HomeIntent.RefreshNews(
+                    oldFormatDate = oldPattern,
+                    newFormatDate = newPattern
+                )
+            )
+        },
+        onItemClick = { navController.navigate("detail/${it.articleId}") }
     )
 
 }
 
 @Composable
-fun Home(
+private fun Home(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     articles: List<Article>,
     showProgress: Boolean,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemClick: (article: Article) -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -87,30 +96,28 @@ fun Home(
             }
             NewsItemList(
                 articles = articles,
-                isRefreshing = isRefreshing,
-                onRefresh = { onRefresh() }
+                onRefresh = onRefresh,
+                onItemClick = onItemClick
             )
         }
     )
 }
 
 @Composable
-fun NewsItemList(
+private fun NewsItemList(
     articles: List<Article>,
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemClick: (article: Article) -> Unit
 ) {
     SwipeRefresh(
-        state = rememberSwipeRefreshState(isRefreshing),
-        onRefresh = { onRefresh() },
+        state = rememberSwipeRefreshState(false),
+        onRefresh = onRefresh,
     ) {
         LazyColumn {
-            items(articles) {
+            items(articles) { article ->
                 NewsItem(
-                    title = it.title,
-                    description = it.description,
-                    newsDate = it.publishedAt,
-                    imageUrl = it.urlToImage
+                    article = article,
+                    onItemClick = onItemClick
                 )
                 Divider(color = Color.Black, thickness = 1.dp)
             }
@@ -119,14 +126,15 @@ fun NewsItemList(
 }
 
 @Composable
-fun NewsItem(
-    title: String,
-    description: String,
-    newsDate: String,
-    imageUrl: String
+private fun NewsItem(
+    article: Article,
+    onItemClick: (article: Article) -> Unit
 ) {
     Row(
         modifier = Modifier
+            .clickable {
+                onItemClick(article)
+            }
             .fillMaxWidth()
             .padding(MarginPaddingSizeMedium)
     ) {
@@ -137,7 +145,7 @@ fun NewsItem(
                 .padding(
                     end = MarginPaddingSizeMedium
                 ),
-            painter = rememberImagePainter(imageUrl),
+            painter = rememberImagePainter(article.urlToImage),
             contentDescription = "",
             contentScale = ContentScale.Crop
         )
@@ -145,14 +153,14 @@ fun NewsItem(
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = title,
+                    text = article.title,
                     style = Typography.h6
                 )
             }
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = description,
+                    text = article.description,
                     style = Typography.subtitle1,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -160,10 +168,7 @@ fun NewsItem(
                 Spacer(modifier = Modifier.fillMaxWidth())
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = newsDate.toFormattedDateString(
-                        stringResource(id = R.string.date_service_pattern), 
-                        stringResource(id = R.string.date_home_pattern)
-                    ),
+                    text = article.publishedAt,
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.End,
                     style = Typography.body2
@@ -174,41 +179,39 @@ fun NewsItem(
 }
 
 @Composable
-fun HomeAppBar() {
-    CryptoNewsAppBar(title = R.string.app_name)
+private fun HomeAppBar() {
+    CryptoNewsAppBar(title = stringResource(id = R.string.app_name))
 }
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItemListPreview() {
-    NewsItemList(fakeNewsList, false, {})
+private fun NewsItemListPreview() {
+    NewsItemList(fakeNewsList, {}, {})
 }
 
 @Composable
 @Preview(showBackground = true)
-fun NewsItemPreview() {
+private fun NewsItemPreview() {
     NewsItem(
-        title = "Noticia bla bla bla bla bla",
-        description = "Descrição bla bla bla bla bla bla bla bla",
-        newsDate = "10/05/1990",
-        imageUrl = ""
+        article = fakeNewsList[0],
+        onItemClick = {}
     )
 }
 
 @Composable
 @Preview
-fun HomeAppBarPreview() {
-    CryptoNewsAppBar(title = R.string.app_name)
+private fun HomeAppBarPreview() {
+    CryptoNewsAppBar(title = stringResource(id = R.string.app_name))
 }
 
 @Composable
 @Preview
-fun HomePreview() {
+private fun HomePreview() {
     Home(
         articles = fakeNewsList,
         showProgress = true,
-        isRefreshing = false,
-        onRefresh = {}
+        onRefresh = {},
+        onItemClick = {}
     )
 }
 
