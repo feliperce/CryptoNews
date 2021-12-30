@@ -1,6 +1,7 @@
 package br.com.mobileti.cryptonews.feature.home.view
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
@@ -32,6 +35,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
     homeViewModel: HomeViewModel = getViewModel()
 ) {
     val homeUiState by homeViewModel.homeState.collectAsState()
@@ -39,15 +43,31 @@ fun HomeScreen(
 
     val scaffoldState = rememberScaffoldState()
 
-    homeViewModel.sendIntent(HomeIntent.GetCurrentNews)
+    val oldPattern = stringResource(id = R.string.date_service_pattern)
+    val newPattern = stringResource(id = R.string.date_home_pattern)
+
+    homeViewModel.sendIntent(
+        HomeIntent.GetCurrentNews(
+            oldFormatDate = oldPattern,
+            newFormatDate = newPattern
+        )
+    )
 
     showProgress = homeUiState.loading
 
     Home(
         scaffoldState = scaffoldState,
-        articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
+        articles = homeUiState.articleList,
         showProgress = showProgress,
-        onRefresh = { homeViewModel.sendIntent(HomeIntent.RefreshNews) }
+        onRefresh = {
+            homeViewModel.sendIntent(
+                HomeIntent.RefreshNews(
+                    oldFormatDate = oldPattern,
+                    newFormatDate = newPattern
+                )
+            )
+        },
+        onItemClick = { navController.navigate("detail/${it.articleId}") }
     )
 
 }
@@ -57,7 +77,8 @@ private fun Home(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     articles: List<Article>,
     showProgress: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemClick: (article: Article) -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
@@ -75,7 +96,8 @@ private fun Home(
             }
             NewsItemList(
                 articles = articles,
-                onRefresh = { onRefresh() }
+                onRefresh = onRefresh,
+                onItemClick = onItemClick
             )
         }
     )
@@ -84,19 +106,18 @@ private fun Home(
 @Composable
 private fun NewsItemList(
     articles: List<Article>,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onItemClick: (article: Article) -> Unit
 ) {
     SwipeRefresh(
         state = rememberSwipeRefreshState(false),
-        onRefresh = { onRefresh() },
+        onRefresh = onRefresh,
     ) {
         LazyColumn {
-            items(articles) {
+            items(articles) { article ->
                 NewsItem(
-                    title = it.title,
-                    description = it.description,
-                    newsDate = it.publishedAt,
-                    imageUrl = it.urlToImage
+                    article = article,
+                    onItemClick = onItemClick
                 )
                 Divider(color = Color.Black, thickness = 1.dp)
             }
@@ -106,13 +127,14 @@ private fun NewsItemList(
 
 @Composable
 private fun NewsItem(
-    title: String,
-    description: String,
-    newsDate: String,
-    imageUrl: String
+    article: Article,
+    onItemClick: (article: Article) -> Unit
 ) {
     Row(
         modifier = Modifier
+            .clickable {
+                onItemClick(article)
+            }
             .fillMaxWidth()
             .padding(MarginPaddingSizeMedium)
     ) {
@@ -123,7 +145,7 @@ private fun NewsItem(
                 .padding(
                     end = MarginPaddingSizeMedium
                 ),
-            painter = rememberImagePainter(imageUrl),
+            painter = rememberImagePainter(article.urlToImage),
             contentDescription = "",
             contentScale = ContentScale.Crop
         )
@@ -131,14 +153,14 @@ private fun NewsItem(
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = title,
+                    text = article.title,
                     style = Typography.h6
                 )
             }
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = description,
+                    text = article.description,
                     style = Typography.subtitle1,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
@@ -146,10 +168,7 @@ private fun NewsItem(
                 Spacer(modifier = Modifier.fillMaxWidth())
                 Text(
                     modifier = Modifier.fillMaxWidth(),
-                    text = newsDate.toFormattedDateString(
-                        stringResource(id = R.string.date_service_pattern), 
-                        stringResource(id = R.string.date_home_pattern)
-                    ),
+                    text = article.publishedAt,
                     fontStyle = FontStyle.Italic,
                     textAlign = TextAlign.End,
                     style = Typography.body2
@@ -167,17 +186,15 @@ private fun HomeAppBar() {
 @Composable
 @Preview(showBackground = true)
 private fun NewsItemListPreview() {
-    NewsItemList(fakeNewsList, {})
+    NewsItemList(fakeNewsList, {}, {})
 }
 
 @Composable
 @Preview(showBackground = true)
 private fun NewsItemPreview() {
     NewsItem(
-        title = "Noticia bla bla bla bla bla",
-        description = "Descrição bla bla bla bla bla bla bla bla",
-        newsDate = "10/05/1990",
-        imageUrl = ""
+        article = fakeNewsList[0],
+        onItemClick = {}
     )
 }
 
@@ -193,7 +210,8 @@ private fun HomePreview() {
     Home(
         articles = fakeNewsList,
         showProgress = true,
-        onRefresh = {}
+        onRefresh = {},
+        onItemClick = {}
     )
 }
 

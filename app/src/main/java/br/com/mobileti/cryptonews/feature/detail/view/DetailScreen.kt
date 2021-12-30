@@ -3,12 +3,17 @@ package br.com.mobileti.cryptonews.feature.detail.view
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.mobileti.cryptonews.R
 import br.com.mobileti.cryptonews.feature.detail.state.DetailIntent
 import br.com.mobileti.cryptonews.feature.detail.viewmodel.DetailViewModel
@@ -22,31 +27,43 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun DetailScreen(
+    navController: NavHostController = rememberNavController(),
     detailViewModel: DetailViewModel = getViewModel(),
     articleId: Long
 ) {
     val detailUiState by detailViewModel.detailState.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
-    detailViewModel.sendIntent(DetailIntent.GetArticleById(articleId))
+    detailViewModel.sendIntent(
+        DetailIntent.GetArticleById(
+            articleId = articleId,
+            oldDateFormat = stringResource(id = R.string.date_service_pattern),
+            newDateFormat = stringResource(id = R.string.date_detail_pattern)
+        )
+    )
 
     val article = detailUiState.article
 
     Detail(
         scaffoldState = scaffoldState,
-        article = article
+        article = article,
+        onBackClick = { navController.popBackStack() }
     )
 }
 
 @Composable
 private fun Detail(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    article: Article
+    article: Article,
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            DetailAppBar(title = article.title)
+            DetailAppBar(
+                title = article.title,
+                onBackClick = onBackClick
+            )
         },
         content = {
             DetailContent(
@@ -97,14 +114,29 @@ private fun DetailContent(
 }
 
 @Composable
-private fun DetailAppBar(title: String) {
-    CryptoNewsAppBar(title = title)
+private fun DetailAppBar(
+    title: String,
+    onBackClick: () -> Unit
+) {
+    CryptoNewsAppBar(
+        title = title,
+        titleMaxLines = 1,
+        titleOverflow = TextOverflow.Ellipsis,
+        navigationIcon = {
+            IconButton(onClick = { onBackClick() }) {
+                Icon(Icons.Filled.ArrowBack,"")
+            }
+        }
+    )
 }
 
 @Preview
 @Composable
 private fun DetailAppBarPreview() {
-    DetailAppBar(title = "News Title")
+    DetailAppBar(
+        title = "News Title News Title News Title News Title News Title News Title",
+        onBackClick = {}
+    )
 }
 
 @Preview(showBackground = true)
@@ -121,7 +153,10 @@ private fun DetailContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun DetailPreview() {
-    Detail(article = fakeArticle)
+    Detail(
+        article = fakeArticle,
+        onBackClick = {}
+    )
 }
 
 

@@ -3,6 +3,7 @@ package br.com.mobileti.cryptonews.feature.detail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.mobileti.cryptonews.data.Resource
+import br.com.mobileti.cryptonews.extension.toFormattedDateString
 import br.com.mobileti.cryptonews.feature.detail.repository.DetailRepository
 import br.com.mobileti.cryptonews.feature.detail.state.DetailIntent
 import br.com.mobileti.cryptonews.feature.detail.state.DetailUiState
@@ -35,13 +36,21 @@ class DetailViewModel(
             .onEach { intent ->
                 when(intent) {
                     is DetailIntent.GetArticleById -> {
-                        getArticleByArticleId(articleId = intent.articleId)
+                        getArticleByArticleId(
+                            articleId = intent.articleId,
+                            oldDateFormat = intent.oldDateFormat,
+                            newDateFormat = intent.newDateFormat
+                        )
                     }
                 }
             }.launchIn(viewModelScope)
     }
 
-    private fun getArticleByArticleId(articleId: Long) {
+    private fun getArticleByArticleId(
+        articleId: Long,
+        oldDateFormat: String,
+        newDateFormat: String
+    ) {
         viewModelScope.launch {
             detailRepository.getArticleById(articleId = articleId).collect { res ->
                 when(res) {
@@ -57,8 +66,14 @@ class DetailViewModel(
                     }
                     is Resource.Success -> {
                         res.data?.let { data ->
+                            val article = data.copy(
+                                publishedAt = data.publishedAt.toFormattedDateString(
+                                    oldFormat = oldDateFormat,
+                                    newFormat = newDateFormat
+                                )
+                            )
                             _detailState.update {
-                                it.copy(article = data)
+                                it.copy(article = article)
                             }
                         }
                     }

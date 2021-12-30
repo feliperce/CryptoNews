@@ -10,5 +10,9 @@ data class DetailUiState(
 )
 
 sealed class DetailIntent {
-    class GetArticleById(val articleId: Long) : DetailIntent()
+    class GetArticleById(
+        val articleId: Long,
+        val oldDateFormat: String,
+        val newDateFormat: String
+    ) : DetailIntent()
 }

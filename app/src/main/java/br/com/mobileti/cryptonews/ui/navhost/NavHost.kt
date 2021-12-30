@@ -23,6 +23,7 @@ fun CryptoNewsNavHost(
         composable("home") {
             Surface(color = MaterialTheme.colors.background) {
                 HomeScreen(
+                    navController = navHostController,
                     homeViewModel = homeViewModel
                 )
             }
@@ -34,6 +35,7 @@ fun CryptoNewsNavHost(
             it.arguments?.let { arg ->
                 Surface(color = MaterialTheme.colors.background) {
                     DetailScreen(
+                        navController = navHostController,
                         detailViewModel = detailViewModel,
                         articleId = arg.getLong("articleId")
                     )
