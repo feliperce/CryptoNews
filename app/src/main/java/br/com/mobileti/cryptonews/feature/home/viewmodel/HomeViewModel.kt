@@ -23,7 +23,28 @@ class HomeViewModel(
         handleIntents()
     }
 
-    fun refreshNews() {
+    fun sendIntent(intent: HomeIntent) {
+        viewModelScope.launch {
+            intentChannel.send(intent)
+        }
+    }
+
+    private fun handleIntents() {
+        intentChannel
+            .consumeAsFlow()
+            .onEach { intent ->
+                when(intent) {
+                    is HomeIntent.GetCurrentNews -> {
+                        getCurrentNews()
+                    }
+                    is HomeIntent.RefreshNews -> {
+                        refreshNews()
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private fun refreshNews() {
         viewModelScope.launch {
             homeRepository.refreshNews().collect { res ->
                 when(res) {
@@ -45,18 +66,6 @@ class HomeViewModel(
                 }
             }
         }
-    }
-
-    private fun handleIntents() {
-        intentChannel
-            .consumeAsFlow()
-            .onEach { intent ->
-                when(intent) {
-                    is HomeIntent.GetCurrentNews -> {
-                        getCurrentNews()
-                    }
-                }
-            }.launchIn(viewModelScope)
     }
 
     private fun getCurrentNews() {

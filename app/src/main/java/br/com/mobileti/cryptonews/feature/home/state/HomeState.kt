@@ -12,4 +12,5 @@ data class HomeUiState (
 
 sealed class HomeIntent {
     object GetCurrentNews : HomeIntent()
+    object RefreshNews : HomeIntent()
 }

@@ -39,11 +39,7 @@ fun HomeScreen(
 
     val scaffoldState = rememberScaffoldState()
 
-    LaunchedEffect(homeViewModel.intentChannel) {
-        homeViewModel.intentChannel.send(
-            HomeIntent.GetCurrentNews
-        )
-    }
+    homeViewModel.sendIntent(HomeIntent.GetCurrentNews)
 
     showProgress = homeUiState.loading
 
@@ -51,7 +47,7 @@ fun HomeScreen(
         scaffoldState = scaffoldState,
         articles = homeUiState.currentNews.lastOrNull()?.articles ?: listOf(),
         showProgress = showProgress,
-        onRefresh = { homeViewModel.refreshNews() }
+        onRefresh = { homeViewModel.sendIntent(HomeIntent.RefreshNews) }
     )
 
 }
