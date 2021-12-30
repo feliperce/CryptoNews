@@ -3,6 +3,7 @@ package br.com.mobileti.cryptonews.di
 import androidx.room.Room
 import br.com.mobileti.cryptonews.BuildConfig
 import br.com.mobileti.cryptonews.data.local.db.NewsDb
+import br.com.mobileti.cryptonews.data.remote.KeyInterceptor
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -24,7 +25,7 @@ val roomModule = module {
 }
 
 val retrofitModule = module {
-    fun retrofit(): Retrofit {
+    fun retrofit(keyInterceptor: KeyInterceptor): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level =
             if (BuildConfig.DEBUG) {
@@ -33,6 +34,7 @@ val retrofitModule = module {
 
         val client = OkHttpClient.Builder()
             .addInterceptor(interceptor)
+            .addInterceptor(keyInterceptor)
             .build()
 
         return Retrofit.Builder()
@@ -42,9 +44,10 @@ val retrofitModule = module {
             .build()
     }
 
-    fun newsApiService(): NewsService {
-        return retrofit().create(NewsService::class.java)
+    fun newsApiService(keyInterceptor: KeyInterceptor): NewsService {
+        return retrofit(keyInterceptor).create(NewsService::class.java)
     }
 
-    single { newsApiService() }
+    factory { KeyInterceptor(androidContext()) }
+    single { newsApiService(get()) }
 }

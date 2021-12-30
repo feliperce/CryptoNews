@@ -13,6 +13,7 @@ object Dependencies {
             const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
             const val uiTestJunit = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
             const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+            const val navHost = "androidx.navigation:navigation-compose:${Versions.navhost}"
         }
 
         object Lifecycle {
@@ -28,6 +29,10 @@ object Dependencies {
 
     object Google {
         const val material = "com.google.android.material:material:${Versions.material}"
+
+        object Accompanist {
+            const val swipRefresh = "com.google.accompanist:accompanist-swiperefresh:${Versions.accompanist}"
+        }
     }
 
     object Junit {
@@ -46,8 +51,9 @@ object Dependencies {
         const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
     }
 
-    object Koil {
-        const val koil = "io.coil-kt:coil:${Versions.koil}"
+    object Coil {
+        const val coil = "io.coil-kt:coil:${Versions.coil}"
+        const val coilCompose = "io.coil-kt:coil-compose:${Versions.coil}"
     }
 
     object Koin {

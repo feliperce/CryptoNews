@@ -16,6 +16,8 @@ object Versions {
     const val room = "2.3.0"
     const val okhttp = "4.9.3"
     const val coroutines = "1.3.9"
-    const val koil = "1.4.0"
+    const val coil = "1.4.0"
     const val koin = "3.1.4"
+    const val accompanist = "0.22.0-rc"
+    const val navhost = "2.4.0-rc01"
 }
