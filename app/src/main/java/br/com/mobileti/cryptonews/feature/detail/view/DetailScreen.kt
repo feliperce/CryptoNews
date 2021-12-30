@@ -2,40 +2,65 @@ package br.com.mobileti.cryptonews.feature.detail.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Alignment
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import br.com.mobileti.cryptonews.R
-import br.com.mobileti.cryptonews.extension.toFormattedDateString
+import br.com.mobileti.cryptonews.feature.detail.state.DetailIntent
+import br.com.mobileti.cryptonews.feature.detail.viewmodel.DetailViewModel
 import br.com.mobileti.cryptonews.feature.home.mapper.Article
 import br.com.mobileti.cryptonews.ui.component.CryptoNewsAppBar
 import br.com.mobileti.cryptonews.ui.theme.DetailImageHeight
-import br.com.mobileti.cryptonews.ui.theme.HomeImageSize
 import br.com.mobileti.cryptonews.ui.theme.MarginPaddingSizeMedium
 import br.com.mobileti.cryptonews.ui.theme.Typography
 import coil.compose.rememberImagePainter
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun DetailScreen() {
-    /*Scaffold(
-        topBar = {
-            DetailAppBar(title = "")
-        }
-    )*/
+fun DetailScreen(
+    detailViewModel: DetailViewModel = getViewModel(),
+    articleId: Long
+) {
+    val detailUiState by detailViewModel.detailState.collectAsState()
+    val scaffoldState = rememberScaffoldState()
+
+    detailViewModel.sendIntent(DetailIntent.GetArticleById(articleId))
+
+    val article = detailUiState.article
+
+    Detail(
+        scaffoldState = scaffoldState,
+        article = article
+    )
 }
 
 @Composable
 private fun Detail(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    article: Article
+) {
+    Scaffold(
+        scaffoldState = scaffoldState,
+        topBar = {
+            DetailAppBar(title = article.title)
+        },
+        content = {
+            DetailContent(
+                imageUrl = article.urlToImage,
+                author = article.author,
+                content = article.content,
+                publishedAt = article.publishedAt
+            )
+        }
+    )
+}
+
+@Composable
+private fun DetailContent(
     imageUrl: String,
     author: String,
     content: String,
@@ -84,15 +109,25 @@ private fun DetailAppBarPreview() {
 
 @Preview(showBackground = true)
 @Composable
-private fun DetailPreview() {
-    Detail(
+private fun DetailContentPreview() {
+    DetailContent(
         imageUrl = "",
-        author = fakeAuthor,
-        content = fakeContent,
-        publishedAt = fakePublishedAt
+        author = fakeArticle.author,
+        content = fakeArticle.content,
+        publishedAt = fakeArticle.publishedAt
     )
 }
 
-private const val fakeAuthor = "Authooor"
-private const val fakeContent = "Lero lero lero lero lero, lero lero lero lero. Lero lero."
-private const val fakePublishedAt = "10/05/2010 10:05"
+@Preview(showBackground = true)
+@Composable
+private fun DetailPreview() {
+    Detail(article = fakeArticle)
+}
+
+
+private val fakeArticle: Article = Article(
+    title = "News Title",
+    publishedAt = "10/05/2010 10:05",
+    author = "Authoooor",
+    content = "Lero lero lero lero lero, lero lero lero lero. Lero lero."
+)

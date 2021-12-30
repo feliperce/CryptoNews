@@ -6,7 +6,7 @@ import java.lang.Exception
 data class DetailUiState(
     val loading: Boolean = false,
     val error: Exception? = null,
-    val article: Article? = null
+    val article: Article = Article()
 )
 
 sealed class DetailIntent {

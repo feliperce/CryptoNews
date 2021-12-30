@@ -14,7 +14,7 @@ class DetailViewModel(
     private val detailRepository: DetailRepository
 ) : ViewModel() {
 
-    val intentChannel = Channel<DetailIntent>(Channel.UNLIMITED)
+    private val intentChannel = Channel<DetailIntent>(Channel.UNLIMITED)
 
     private val _detailState = MutableStateFlow(DetailUiState(loading = false))
     val detailState: StateFlow<DetailUiState> = _detailState.asStateFlow()
@@ -56,8 +56,10 @@ class DetailViewModel(
                         }
                     }
                     is Resource.Success -> {
-                        _detailState.update {
-                            it.copy(article = res.data)
+                        res.data?.let { data ->
+                            _detailState.update {
+                                it.copy(article = data)
+                            }
                         }
                     }
                 }
