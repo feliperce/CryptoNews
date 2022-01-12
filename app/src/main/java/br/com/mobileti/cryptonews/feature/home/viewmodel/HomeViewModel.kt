@@ -3,6 +3,9 @@ package br.com.mobileti.cryptonews.feature.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.mobileti.cryptonews.data.Resource
+import br.com.mobileti.cryptonews.extension.toFormattedDateString
+import br.com.mobileti.cryptonews.feature.home.mapper.Article
+import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.repository.HomeRepository
 import br.com.mobileti.cryptonews.feature.home.state.HomeIntent
 import br.com.mobileti.cryptonews.feature.home.state.HomeUiState
@@ -23,7 +26,37 @@ class HomeViewModel(
         handleIntents()
     }
 
-    fun refreshNews() {
+    fun sendIntent(intent: HomeIntent) {
+        viewModelScope.launch {
+            intentChannel.send(intent)
+        }
+    }
+
+    private fun handleIntents() {
+        intentChannel
+            .consumeAsFlow()
+            .onEach { intent ->
+                when(intent) {
+                    is HomeIntent.GetCurrentNews -> {
+                        getCurrentNews(
+                            oldFormatDate = intent.oldFormatDate,
+                            newFormatDate = intent.newFormatDate
+                        )
+                    }
+                    is HomeIntent.RefreshNews -> {
+                        refreshNews(
+                            oldFormatDate = intent.oldFormatDate,
+                            newFormatDate = intent.newFormatDate
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private fun refreshNews(
+        oldFormatDate: String,
+        newFormatDate: String
+    ) {
         viewModelScope.launch {
             homeRepository.refreshNews().collect { res ->
                 when(res) {
@@ -38,8 +71,13 @@ class HomeViewModel(
                         }
                     }
                     is Resource.Success -> {
+                        val formattedArticleList = mapCurrentNewsList(
+                            currentNews = res.data,
+                            oldFormatDate = oldFormatDate,
+                            newFormatDate = newFormatDate
+                        )
                         _homeState.update {
-                            it.copy(currentNews = res.data ?: listOf())
+                            it.copy(articleList = formattedArticleList)
                         }
                     }
                 }
@@ -47,19 +85,10 @@ class HomeViewModel(
         }
     }
 
-    private fun handleIntents() {
-        intentChannel
-            .consumeAsFlow()
-            .onEach { intent ->
-                when(intent) {
-                    is HomeIntent.GetCurrentNews -> {
-                        getCurrentNews()
-                    }
-                }
-            }.launchIn(viewModelScope)
-    }
-
-    private fun getCurrentNews() {
+    private fun getCurrentNews(
+        oldFormatDate: String,
+        newFormatDate: String
+    ) {
         viewModelScope.launch {
             homeRepository.getCurrentNews()
                 .collect { res ->
@@ -75,12 +104,33 @@ class HomeViewModel(
                         }
                     }
                     is Resource.Success -> {
+                        val formattedArticleList = mapCurrentNewsList(
+                            currentNews = res.data,
+                            oldFormatDate = oldFormatDate,
+                            newFormatDate = newFormatDate
+                        )
                         _homeState.update {
-                            it.copy(currentNews = res.data ?: listOf())
+                            it.copy(articleList = formattedArticleList)
                         }
                     }
                 }
             }
+        }
+    }
+
+    private fun mapCurrentNewsList(
+        currentNews: List<CurrentNews>?,
+        oldFormatDate: String,
+        newFormatDate: String
+    ): List<Article> {
+        val articleList = currentNews?.lastOrNull()?.articles ?: listOf()
+        return articleList.map {
+            it.copy(
+                publishedAt = it.publishedAt.toFormattedDateString(
+                    oldFormat = oldFormatDate,
+                    newFormat = newFormatDate
+                )
+            )
         }
     }
 }

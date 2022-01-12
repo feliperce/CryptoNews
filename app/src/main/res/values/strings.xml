@@ -12,4 +12,7 @@
     <string name="date_service_pattern">yyyy-MM-dd\'T\'HH:mm:ss\'Z\'</string>
     <string name="date_home_pattern">dd/MM/yyyy</string>
     <string name="date_detail_pattern">dd/MM/yyyy HH:mm</string>
+
+    <!-- Detail -->
+    <string name="detail_author">Por: %s - %s</string>
 </resources>

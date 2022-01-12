@@ -20,7 +20,7 @@ inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
     crossinline onRemote: suspend (REMOTE) -> Unit,
     crossinline shouldFetchFromRemote: suspend (data: LOCAL?) -> Boolean,
     crossinline onFinish: () -> Unit = { },
-    crossinline onException: (error: Throwable) -> Unit? = { }
+    crossinline onException: FlowCollector<Resource<MAPPER>>.(error: Throwable) -> Unit? = { }
 ) = flow<Resource<MAPPER>> {
 
     val localData: LOCAL? = local()
@@ -58,7 +58,7 @@ inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
             emit(Resource.Error(ConnectionTimeoutException(R.string.error_timeout)))
         }
         else -> {
-            if (onException.invoke(it) == null) {
+            if (onException.invoke(this, it) == null) {
                 emit(Resource.Error(GenericException(R.string.error_generic)))
             }
         }
@@ -69,3 +69,22 @@ inline fun <reified REMOTE, LOCAL, MAPPER> syncData(
 }.onStart {
     emit(Resource.Loading(true))
 }
+
+fun <LOCAL, MAPPER> callLocalData(
+    local: suspend () -> LOCAL,
+    mapper: suspend (LOCAL?) -> MAPPER,
+    onFinish: suspend () -> Unit = { },
+    onException: FlowCollector<Resource<MAPPER>>.(error: Throwable) -> Unit? = { }
+) = flow<Resource<MAPPER>> {
+    val localData = local()
+    emit(Resource.Success(mapper(localData)))
+}.catch {
+    onException(this, it)
+}.onStart {
+    emit(Resource.Loading(true))
+}.onCompletion {
+    emit(Resource.Loading(false))
+    onFinish()
+}.flowOn(Dispatchers.IO)
+
+

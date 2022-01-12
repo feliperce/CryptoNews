@@ -30,6 +30,9 @@ interface NewsDao {
         insertArticles(articleEntityList)
     }
 
+    @Query("SELECT * from articles WHERE articles.articleId = :articleId")
+    suspend fun getArticleByArticleId(articleId: Long): ArticleEntity
+
     @Transaction
     @Query("SELECT * FROM news")
     suspend fun getNewsWithArticle(): List<NewsWithArticles>

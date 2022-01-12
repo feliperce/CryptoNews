@@ -13,6 +13,7 @@ object Dependencies {
             const val activity = "androidx.activity:activity-compose:${Versions.activityCompose}"
             const val uiTestJunit = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
             const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+            const val navHost = "androidx.navigation:navigation-compose:${Versions.navhost}"
         }
 
         object Lifecycle {
