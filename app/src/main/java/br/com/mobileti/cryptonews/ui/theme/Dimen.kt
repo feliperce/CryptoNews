@@ -12,7 +12,7 @@ val MarginPaddingSizeXxlarge = 40.dp
 val StandardTouchSize = 48.dp
 
 val HomeImageSize = 80.dp
-val DetailImageHeight = 130.dp
+val DetailImageHeight = 200.dp
 
 val TextSizeMicro =12.sp
 val TextSizeSmall = 14.sp

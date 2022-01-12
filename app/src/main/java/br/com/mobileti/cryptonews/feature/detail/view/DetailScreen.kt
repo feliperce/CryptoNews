@@ -2,6 +2,8 @@ package br.com.mobileti.cryptonews.feature.detail.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -83,10 +85,14 @@ private fun DetailContent(
     content: String,
     publishedAt: String
 ) {
+
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(MarginPaddingSizeMedium)
+            .verticalScroll(scrollState)
     ) {
         Image(
             modifier = Modifier
