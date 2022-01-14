@@ -108,4 +108,6 @@ dependencies {
     implementation(Dependencies.Koin.koin)
     implementation(Dependencies.Koin.workmanager)
     implementation(Dependencies.Koin.compose)
+
+    implementation(project(":data"))
 }
