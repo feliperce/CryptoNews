@@ -2,7 +2,7 @@ package br.com.mobileti.cryptonews.data.remote
 
 import android.content.Context
 import android.widget.Toast
-import br.com.mobileti.cryptonews.R
+import br.com.mobileti.cryptonews.data.R
 import kotlinx.coroutines.*
 import okhttp3.Interceptor
 import okhttp3.Request

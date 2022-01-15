@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ERROR -->
+    <string name="error_generic">Ocorreu um erro inesperado, tente novamente mais tarde.</string>
+    <string name="no_connection">Ocorreu um erro, verifique sua conexão com a internet.</string>
+    <string name="error_timeout">O serviço está temporariamente indisponível, tente novamente mais tarde</string>
+    <string name="error_empty_api">Precisa informar sua API Key</string>
+    <string name="error_auth">Você deve informar uma chave API em local.properties</string>
+
+</resources>

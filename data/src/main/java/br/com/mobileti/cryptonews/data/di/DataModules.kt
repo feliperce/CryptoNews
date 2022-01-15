@@ -1,7 +1,7 @@
-package br.com.mobileti.cryptonews.di
+package br.com.mobileti.cryptonews.data.di
 
 import androidx.room.Room
-import br.com.mobileti.cryptonews.BuildConfig
+import br.com.mobileti.cryptonews.data.BuildConfig
 import br.com.mobileti.cryptonews.data.local.db.NewsDb
 import br.com.mobileti.cryptonews.data.remote.KeyInterceptor
 import br.com.mobileti.cryptonews.data.remote.service.NewsService

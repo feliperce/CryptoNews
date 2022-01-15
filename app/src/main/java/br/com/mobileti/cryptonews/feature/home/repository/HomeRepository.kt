@@ -2,11 +2,10 @@ package br.com.mobileti.cryptonews.feature.home.repository
 
 import br.com.mobileti.cryptonews.data.Resource
 import br.com.mobileti.cryptonews.data.local.dao.NewsDao
-import br.com.mobileti.cryptonews.data.local.entity.NewsWithArticles
 import br.com.mobileti.cryptonews.data.remote.mapper.toArticleEntityList
 import br.com.mobileti.cryptonews.data.remote.mapper.toNewsEntity
 import br.com.mobileti.cryptonews.data.remote.service.NewsService
-import br.com.mobileti.cryptonews.extension.syncData
+import br.com.mobileti.cryptonews.data.extension.syncData
 import br.com.mobileti.cryptonews.feature.home.mapper.CurrentNews
 import br.com.mobileti.cryptonews.feature.home.mapper.toCurrentNewsList
 import kotlinx.coroutines.flow.*
