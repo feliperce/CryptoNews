@@ -8,23 +8,19 @@ import br.com.mobileti.cryptonews.data.remote.service.NewsService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-
-val roomModule = module {
-    single {
-        val db = Room.databaseBuilder(
+val dataModule = module {
+    single(named("db")) {
+        Room.databaseBuilder(
             androidContext(),
             NewsDb::class.java, "CryptoNews"
         ).build()
-
-        db.newsDao()
     }
-}
 
-val retrofitModule = module {
     fun retrofit(keyInterceptor: KeyInterceptor): Retrofit {
         val interceptor = HttpLoggingInterceptor()
         interceptor.level =
@@ -44,10 +40,9 @@ val retrofitModule = module {
             .build()
     }
 
-    fun newsApiService(keyInterceptor: KeyInterceptor): NewsService {
-        return retrofit(keyInterceptor).create(NewsService::class.java)
+    single(named("retrofit")) {
+        retrofit(get())
     }
 
     factory { KeyInterceptor(androidContext()) }
-    single { newsApiService(get()) }
 }
