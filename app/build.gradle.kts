@@ -81,28 +81,6 @@ dependencies {
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
     debugImplementation(Dependencies.Androidx.Compose.tooling)
     implementation(Dependencies.Androidx.Compose.navHost)
-    // Accompanist
-    implementation(Dependencies.Google.Accompanist.swipRefresh)
-
-    // Room
-    implementation(Dependencies.Androidx.Room.runtime)
-    kapt(Dependencies.Androidx.Room.compiler)
-    implementation(Dependencies.Androidx.Room.ktx)
-
-    // Retrofit
-    implementation(Dependencies.Square.retrofit)
-    implementation(Dependencies.Square.gsonConverter)
-    // okhttp
-    implementation(platform(Dependencies.Square.okHttpBom))
-    implementation(Dependencies.Square.okHttp)
-    implementation(Dependencies.Square.okHttpLogging)
-
-    // Coroutines
-    implementation(Dependencies.Jetbrains.coroutines)
-
-    // Koil
-    implementation(Dependencies.Coil.coil)
-    implementation(Dependencies.Coil.coilCompose)
 
     // Koin
     implementation(Dependencies.Koin.koin)
@@ -110,4 +88,5 @@ dependencies {
     implementation(Dependencies.Koin.compose)
 
     implementation(project(":data"))
+    implementation(project(":home"))
 }
