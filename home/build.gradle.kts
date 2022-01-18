@@ -1,7 +1,7 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
@@ -15,11 +15,8 @@ android {
     compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = "br.com.mobileti.cryptonews"
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        versionCode = Config.versionCode
-        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -81,6 +78,28 @@ dependencies {
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
     debugImplementation(Dependencies.Androidx.Compose.tooling)
     implementation(Dependencies.Androidx.Compose.navHost)
+    // Accompanist
+    implementation(Dependencies.Google.Accompanist.swipRefresh)
+
+    // Room
+    implementation(Dependencies.Androidx.Room.runtime)
+    kapt(Dependencies.Androidx.Room.compiler)
+    implementation(Dependencies.Androidx.Room.ktx)
+
+    // Retrofit
+    implementation(Dependencies.Square.retrofit)
+    implementation(Dependencies.Square.gsonConverter)
+    // okhttp
+    implementation(platform(Dependencies.Square.okHttpBom))
+    implementation(Dependencies.Square.okHttp)
+    implementation(Dependencies.Square.okHttpLogging)
+
+    // Coroutines
+    implementation(Dependencies.Jetbrains.coroutines)
+
+    // Koil
+    implementation(Dependencies.Coil.coil)
+    implementation(Dependencies.Coil.coilCompose)
 
     // Koin
     implementation(Dependencies.Koin.koin)
@@ -88,5 +107,4 @@ dependencies {
     implementation(Dependencies.Koin.compose)
 
     implementation(project(":data"))
-    implementation(project(":home"))
 }
