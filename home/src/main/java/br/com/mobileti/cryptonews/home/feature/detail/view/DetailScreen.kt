@@ -20,10 +20,10 @@ import br.com.mobileti.cryptonews.home.feature.detail.state.DetailIntent
 import br.com.mobileti.cryptonews.feature.detail.viewmodel.DetailViewModel
 import br.com.mobileti.cryptonews.home.feature.home.mapper.Article
 import br.com.mobileti.cryptonews.home.R
-import br.com.mobileti.cryptonews.home.ui.component.CryptoNewsAppBar
+import br.com.mobileti.cryptonews.design.component.CryptoNewsAppBar
+import br.com.mobileti.cryptonews.design.theme.MarginPaddingSizeMedium
+import br.com.mobileti.cryptonews.design.theme.Typography
 import br.com.mobileti.cryptonews.home.ui.theme.DetailImageHeight
-import br.com.mobileti.cryptonews.home.ui.theme.MarginPaddingSizeMedium
-import br.com.mobileti.cryptonews.home.ui.theme.Typography
 import coil.compose.rememberImagePainter
 import org.koin.androidx.compose.getViewModel
 

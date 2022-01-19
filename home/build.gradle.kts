@@ -107,4 +107,5 @@ dependencies {
     implementation(Dependencies.Koin.compose)
 
     implementation(project(":data"))
+    implementation(project(":design"))
 }
