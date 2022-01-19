@@ -7,3 +7,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CryptoNews"
 include(":app")
+include(":data")
+include(":home")
+include(":design")
