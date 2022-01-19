@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.home.ui.theme
+package br.com.mobileti.cryptonews.design.theme
 
 import androidx.compose.ui.graphics.Color
 

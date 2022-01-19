@@ -19,14 +19,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.com.mobileti.cryptonews.design.component.CryptoNewsAppBar
+import br.com.mobileti.cryptonews.design.theme.MarginPaddingSizeMedium
+import br.com.mobileti.cryptonews.design.theme.Typography
 import br.com.mobileti.cryptonews.home.feature.home.mapper.Article
 import br.com.mobileti.cryptonews.home.feature.home.state.HomeIntent
 import br.com.mobileti.cryptonews.home.feature.home.viewmodel.HomeViewModel
 import br.com.mobileti.cryptonews.home.R
-import br.com.mobileti.cryptonews.home.ui.component.CryptoNewsAppBar
 import br.com.mobileti.cryptonews.home.ui.theme.HomeImageSize
-import br.com.mobileti.cryptonews.home.ui.theme.MarginPaddingSizeMedium
-import br.com.mobileti.cryptonews.home.ui.theme.Typography
 import coil.compose.rememberImagePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState

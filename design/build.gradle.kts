@@ -1,43 +1,30 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
 }
 
-val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey") ?: "EMPTY_KEY"
-val endpointDebugUrl = "https://newsapi.org/v2/"
-val endpointReleaseUrl = "https://newsapi.org/v2/"
-
 android {
     compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = "br.com.mobileti.cryptonews"
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        versionCode = Config.versionCode
-        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            buildConfigField("String", "ENDPOINT_URL", "\"$endpointReleaseUrl\"")
         }
-        getByName("debug") {
-            buildConfigField("String", "ENDPOINT_URL", "\"$endpointDebugUrl\"")
-        }
+
     }
     compileOptions {
         sourceCompatibility(1.8)
@@ -82,12 +69,4 @@ dependencies {
     debugImplementation(Dependencies.Androidx.Compose.tooling)
     implementation(Dependencies.Androidx.Compose.navHost)
 
-    // Koin
-    implementation(Dependencies.Koin.koin)
-    implementation(Dependencies.Koin.workmanager)
-    implementation(Dependencies.Koin.compose)
-
-    implementation(project(":data"))
-    implementation(project(":home"))
-    implementation(project(":design"))
 }
