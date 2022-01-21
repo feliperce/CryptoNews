@@ -1,4 +1,4 @@
-package br.com.mobileti.cryptonews.home.ui.navhost
+package br.com.mobileti.cryptonews.navhost
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface

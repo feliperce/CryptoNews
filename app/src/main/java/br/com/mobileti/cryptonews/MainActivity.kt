@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import br.com.mobileti.cryptonews.design.theme.CryptoNewsTheme
 import br.com.mobileti.cryptonews.feature.detail.viewmodel.DetailViewModel
 import br.com.mobileti.cryptonews.home.feature.home.viewmodel.HomeViewModel
-import br.com.mobileti.cryptonews.home.ui.navhost.CryptoNewsNavHost
+import br.com.mobileti.cryptonews.navhost.CryptoNewsNavHost
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {

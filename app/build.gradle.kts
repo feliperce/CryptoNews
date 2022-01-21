@@ -61,31 +61,21 @@ android {
 
 dependencies {
 
-    implementation(Dependencies.Androidx.core)
     implementation(Dependencies.Androidx.appcompat)
-    implementation(Dependencies.Google.material)
-
-    // Lifecycle
-    implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
 
     // Test
     testImplementation(Dependencies.Junit.junit)
     androidTestImplementation(Dependencies.Androidx.junit)
-    androidTestImplementation(Dependencies.Androidx.espresso)
 
     // s2 Compose s2
     implementation(Dependencies.Androidx.Compose.ui)
     implementation(Dependencies.Androidx.Compose.material)
-    implementation(Dependencies.Androidx.Compose.toolingPreview)
     implementation(Dependencies.Androidx.Compose.activity)
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
-    debugImplementation(Dependencies.Androidx.Compose.tooling)
     implementation(Dependencies.Androidx.Compose.navHost)
 
     // Koin
     implementation(Dependencies.Koin.koin)
-    implementation(Dependencies.Koin.workmanager)
-    implementation(Dependencies.Koin.compose)
 
     implementation(project(":data"))
     implementation(project(":home"))

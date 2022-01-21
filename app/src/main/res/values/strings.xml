@@ -1,18 +1,3 @@
 <resources>
     <string name="app_name">CryptoNews</string>
-
-    <!-- ERROR -->
-    <string name="error_generic">Ocorreu um erro inesperado, tente novamente mais tarde.</string>
-    <string name="no_connection">Ocorreu um erro, verifique sua conexão com a internet.</string>
-    <string name="error_timeout">O serviço está temporariamente indisponível, tente novamente mais tarde</string>
-    <string name="error_empty_api">Precisa informar sua API Key</string>
-    <string name="error_auth">Você deve informar uma chave API em local.properties</string>
-
-    <!-- Pattern -->
-    <string name="date_service_pattern">yyyy-MM-dd\'T\'HH:mm:ss\'Z\'</string>
-    <string name="date_home_pattern">dd/MM/yyyy</string>
-    <string name="date_detail_pattern">dd/MM/yyyy HH:mm</string>
-
-    <!-- Detail -->
-    <string name="detail_author">Por: %s - %s</string>
 </resources>
