@@ -61,4 +61,8 @@ object Dependencies {
         const val workmanager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
         const val compose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
     }
+
+    object Mockk {
+        const val mockk = "io.mockk:mockk:${Versions.mockk}"
+    }
 }

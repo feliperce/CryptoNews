@@ -20,4 +20,5 @@ object Versions {
     const val koin = "3.1.4"
     const val accompanist = "0.22.0-rc"
     const val navhost = "2.4.0-rc01"
+    const val mockk = "1.12.2"
 }
