@@ -79,4 +79,7 @@ dependencies {
 
     // Koin
     implementation(Dependencies.Koin.koin)
+
+    // Mockk
+    testImplementation(Dependencies.Mockk.mockk)
 }

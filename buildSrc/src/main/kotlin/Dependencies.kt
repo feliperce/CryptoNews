@@ -1,5 +1,10 @@
 object Dependencies {
 
+    object Project {
+        const val gradle = "com.android.tools.build:gradle:${Versions.gradle}"
+        const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    }
+
     object Androidx {
         const val core = "androidx.core:core-ktx:${Versions.coreKtx}"
         const val junit = "androidx.test.ext:junit:${Versions.androidxJunit}"
@@ -60,5 +65,9 @@ object Dependencies {
         const val koin = "io.insert-koin:koin-android:${Versions.koin}"
         const val workmanager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
         const val compose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
+    }
+
+    object Mockk {
+        const val mockk = "io.mockk:mockk:${Versions.mockk}"
     }
 }
