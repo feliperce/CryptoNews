@@ -10,6 +10,7 @@ object Dependencies {
         const val junit = "androidx.test.ext:junit:${Versions.androidxJunit}"
         const val espresso = "androidx.test.espresso:espresso-core:${Versions.espressoCore}"
         const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
+        const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManager}"
 
         object Compose {
             const val ui = "androidx.compose.ui:ui:${Versions.compose}"
