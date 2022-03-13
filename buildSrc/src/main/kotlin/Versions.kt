@@ -1,7 +1,7 @@
 //version constants for the Kotlin DSL dependencies
 object Versions {
     const val kotlin = "1.5.21"
-    const val gradle = "7.1.1"
+    const val gradle = "7.1.2"
     const val coreKtx = "1.7.0"
     const val appcompat = "1.4.0"
     const val material = "1.4.0"

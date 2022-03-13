@@ -105,6 +105,9 @@ dependencies {
     implementation(Dependencies.Koin.workmanager)
     implementation(Dependencies.Koin.compose)
 
+    // Mockk
+    testImplementation(Dependencies.Mockk.mockk)
+
     implementation(project(":data"))
     implementation(project(":design"))
 }
