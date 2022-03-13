@@ -62,6 +62,7 @@ android {
 dependencies {
 
     implementation(Dependencies.Androidx.appcompat)
+    implementation(Dependencies.Androidx.workManager)
 
     // Test
     testImplementation(Dependencies.Junit.junit)
@@ -76,6 +77,13 @@ dependencies {
 
     // Koin
     implementation(Dependencies.Koin.koin)
+
+    // Coroutines
+    implementation(Dependencies.Jetbrains.coroutines)
+
+    // Lifecycle
+    implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
+
 
     implementation(project(":data"))
     implementation(project(":home"))
