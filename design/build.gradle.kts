@@ -65,6 +65,8 @@ dependencies {
     implementation(Dependencies.Androidx.Compose.toolingPreview)
     implementation(Dependencies.Androidx.Compose.activity)
     androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
+    androidTestImplementation(Dependencies.Androidx.Compose.uiTestJunit)
+    debugImplementation(Dependencies.Androidx.Compose.uiTestManifest)
     debugImplementation(Dependencies.Androidx.Compose.tooling)
     implementation(Dependencies.Androidx.Compose.navHost)
 
