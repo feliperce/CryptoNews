@@ -33,7 +33,7 @@ jobs:
         with:
           java-version: 11
       - name: Android Emulator
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+        uses: faruktoptas/android-github-actions-emulator@1.1.0
 
   apk:
     name: Generate APK
