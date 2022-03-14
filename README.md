@@ -10,3 +10,4 @@
 * Work Manager
 * Koin
 * Data cache with Room and Retrofit
+* Github Actions
