@@ -1,5 +1,8 @@
 # CryptoNews
 
+
+To run the project you need a [NewsApi](https://newsapi.org/) key on ```local.properties (apiKey=)```
+
 ### Feature
 * Jetpack Compose
 * Jetpack Compose instrumentation test
@@ -13,3 +16,4 @@
 * Github Actions
 
 ![phone](https://i.imgur.com/aqcJmrI.png)
+
