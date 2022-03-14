@@ -11,3 +11,5 @@
 * Koin
 * Data cache with Room and Retrofit
 * Github Actions
+
+![phone](https://i.imgur.com/aqcJmrI.png)
