@@ -23,8 +23,8 @@ jobs:
       - name: Unit tests
         run: bash ./gradlew test --stacktrace
         
-  uiTest:
-    name: Run Ui Tests
+  instrTest:
+    name: Run Instrumentation Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2.23.0
         with:
           api-level: 30
-          script: ./gradlew connectedCheck
+          script: ./gradlew
 
   apk:
     name: Generate APK
