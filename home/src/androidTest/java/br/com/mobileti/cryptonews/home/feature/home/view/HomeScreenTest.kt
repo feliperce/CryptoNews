@@ -39,8 +39,6 @@ class HomeScreenTest {
             }
         }
 
-        composeTestRule.onRoot(useUnmergedTree = true).printToLog("currentLabelExists")
-
         composeTestRule.onNodeWithContentDescription("root").assertHasClickAction()
     }
 
