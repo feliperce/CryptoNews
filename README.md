@@ -16,3 +16,4 @@ To run the project you need a [NewsApi](https://newsapi.org/) key on ```local.pr
 * Github Actions
 
 ![phone](https://i.imgur.com/aqcJmrI.png)
+
