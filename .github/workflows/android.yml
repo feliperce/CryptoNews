@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - 'develop'
+      - 'master'
   push:
     branches:
       - 'develop'
@@ -33,7 +34,9 @@ jobs:
         with:
           java-version: 11
       - name: Android Emulator
-        uses: faruktoptas/android-github-actions-emulator@1.1.0
+        uses: ReactiveCircus/android-emulator-runner@v2.23.0
+        with:
+          api-level: 30
 
   apk:
     name: Generate APK
