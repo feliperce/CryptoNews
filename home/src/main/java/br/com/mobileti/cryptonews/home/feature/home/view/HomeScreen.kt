@@ -47,12 +47,14 @@ fun HomeScreen(
     val oldPattern = stringResource(id = R.string.date_service_pattern)
     val newPattern = stringResource(id = R.string.date_home_pattern)
 
-    homeViewModel.sendIntent(
-        HomeIntent.GetCurrentNews(
-            oldFormatDate = oldPattern,
-            newFormatDate = newPattern
+    LaunchedEffect(homeUiState.articleList) {
+        homeViewModel.sendIntent(
+            HomeIntent.GetCurrentNews(
+                oldFormatDate = oldPattern,
+                newFormatDate = newPattern
+            )
         )
-    )
+    }
 
     showProgress = homeUiState.loading
 
