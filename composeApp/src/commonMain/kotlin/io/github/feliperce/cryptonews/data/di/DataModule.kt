@@ -23,16 +23,6 @@ val dataModule = module {
                 })
             }
             expectSuccess = true
-            HttpResponseValidator {
-                handleResponseExceptionWithRequest { exception, request ->
-                    val clientException = exception as? ClientRequestException
-                        ?: return@handleResponseExceptionWithRequest
-                    val response = clientException.response
-                    val errorResponse = response.body<ErrorResponse>()
-
-                    throw OpenAiException(errorResponse, response.status.value)
-                }
-            }
         }
     }
 
