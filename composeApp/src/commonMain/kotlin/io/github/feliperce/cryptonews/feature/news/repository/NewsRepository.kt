@@ -34,5 +34,6 @@ class NewsRepository(
         emit(Resource.Loading(isLoading = false))
     }.catch {
         emit(Resource.Error(error = ErrorResponse(message = it.message ?: "Network error").toErrorData()))
+        emit(Resource.Loading(isLoading = false))
     }
 }

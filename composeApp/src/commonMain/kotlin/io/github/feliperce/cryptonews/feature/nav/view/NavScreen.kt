@@ -3,6 +3,8 @@ package io.github.feliperce.cryptonews.feature.nav.view
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -10,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import io.github.feliperce.cryptonews.feature.news.view.NewsScreen
 
 @Composable
 fun NavScreen() {
@@ -36,18 +39,12 @@ fun NavScreen() {
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
-            NavHost(navController, startDestination = Screen.ExtractorScreen.route) {
-                composable(route = Screen.SettingsScreen.route) {
-                    SettingsScreen(
+            NavHost(navController, startDestination = Screen.NewsScreen.route) {
+                composable(route = Screen.NewsScreen.route) {
+                    NewsScreen(
                         snackbarHostState = snackbarHostState
                     )
-                    currentScreen = Screen.SettingsScreen
-                }
-                composable(route = Screen.ExtractorScreen.route) {
-                    ExtractorScreen(
-                        snackbarHostState = snackbarHostState
-                    )
-                    currentScreen = Screen.ExtractorScreen
+                    currentScreen = Screen.NewsScreen
                 }
             }
         }

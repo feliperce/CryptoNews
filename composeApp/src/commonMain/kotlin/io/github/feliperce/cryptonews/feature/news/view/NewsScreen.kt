@@ -1,10 +1,10 @@
 package io.github.feliperce.cryptonews.feature.news.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,7 +23,9 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun NewsScreen() {
+fun NewsScreen(
+    snackbarHostState: SnackbarHostState
+) {
     val newsViewModel: NewsViewModel = koinViewModel()
 
     val newsUiState by newsViewModel.newsState.collectAsState()
@@ -34,8 +36,21 @@ fun NewsScreen() {
         )
     }
 
-    Column {
+    LaunchedEffect(newsUiState.errorData?.id) {
+        newsUiState.errorData?.let { errorData ->
+            snackbarHostState
+                .showSnackbar(
+                    message = errorData.message
+                )
+        }
+    }
 
+    Column {
+        newsUiState.news?.let { news ->
+            NewsContent(news)
+        } ?: run {
+            Text("dasdasdasdasdasdsa")
+        }
     }
 
     if (newsUiState.loading) {
@@ -50,10 +65,12 @@ fun NewsScreen() {
 }
 
 @Composable
-fun NewsContent() {
+fun NewsContent(
+    news: News
+) {
 
     Column {
-
+        NewsItemList(news.articles)
     }
 
 }
@@ -84,10 +101,29 @@ fun NewsItem(article: Article) {
 }
 
 @Composable
+fun NewsItemList(articleList: List<Article>) {
+    LazyColumn() {
+        items(
+            items = articleList
+        ) { article ->
+            NewsItem(article)
+        }
+    }
+}
+
+@Composable
 @Preview
 fun NewsItemPreview() {
     MaterialTheme {
         NewsItem(fakeArticle)
+    }
+}
+
+@Composable
+@Preview
+fun NewsItemListPreview() {
+    MaterialTheme {
+        NewsItemList(fakeArticleList)
     }
 }
 

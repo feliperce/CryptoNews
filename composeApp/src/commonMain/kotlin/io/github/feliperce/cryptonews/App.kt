@@ -21,6 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import cryptonews.composeapp.generated.resources.Res
 import cryptonews.composeapp.generated.resources.compose_multiplatform
+import io.github.feliperce.cryptonews.feature.nav.view.NavScreen
 import io.github.feliperce.cryptonews.feature.news.view.NewsScreen
 
 @OptIn(ExperimentalCoilApi::class)
@@ -32,7 +33,7 @@ fun App() {
     }
 
     MaterialTheme {
-        NewsScreen()
+        NavScreen()
     }
 }
 
