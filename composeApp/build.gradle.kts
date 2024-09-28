@@ -94,6 +94,8 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
+
+            implementation(libs.navigation.compose)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
