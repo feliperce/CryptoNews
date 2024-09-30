@@ -13,8 +13,6 @@ fun main() {
 
     }
     ComposeViewport(document.body!!) {
-        MaterialTheme {
-            App()
-        }
+        App()
     }
 }
