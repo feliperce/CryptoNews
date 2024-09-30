@@ -13,7 +13,6 @@ class NewsApi (
 ) {
     suspend fun getNews(): HttpResponse {
         return client.get {
-            contentType(ContentType.Application.Json)
             url("$BASE_URL/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=${BuildConfig.API_KEY}")
         }
     }
