@@ -7,6 +7,8 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.dsl.module
@@ -22,17 +24,10 @@ val dataModule = module {
                     ignoreUnknownKeys = true
                 })
             }
-            expectSuccess = true
-            HttpResponseValidator {
-                handleResponseExceptionWithRequest { exception, request ->
-                    val clientException = exception as? ClientRequestException
-                        ?: return@handleResponseExceptionWithRequest
-                    val response = clientException.response
-                    val errorResponse = response.body<ErrorResponse>()
-
-                    throw OpenAiException(errorResponse, response.status.value)
-                }
+            defaultRequest {
+                header("Content-Type", ContentType.Application.Json)
             }
+            expectSuccess = true
         }
     }
 
