@@ -1,6 +1,8 @@
 package io.github.feliperce.cryptonews.data.remote
 
-import CryptoNews.composeApp.BuildConfig
+import io.github.feliperce.cryptonews.SERVER_BASE_URL
+import io.github.feliperce.cryptonews.SERVER_HOST
+import io.github.feliperce.cryptonews.SERVER_PORT
 import io.github.feliperce.cryptonews.data.remote.response.NewsResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -13,11 +15,7 @@ class NewsApi (
 ) {
     suspend fun getNews(): HttpResponse {
         return client.get {
-            url("$BASE_URL/everything?q=cryptocurrency&sortBy=publishedAt&apiKey=${BuildConfig.API_KEY}")
+            url("$SERVER_BASE_URL/getNews")
         }
-    }
-
-    companion object {
-        const val BASE_URL = "https://newsapi.org/v2"
     }
 }
