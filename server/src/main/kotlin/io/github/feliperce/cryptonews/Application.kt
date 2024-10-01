@@ -15,6 +15,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.json.Json
@@ -27,6 +28,14 @@ fun main() {
 fun Application.module() {
     install(ContentNegotiation) {
         json()
+    }
+
+    install(CORS) {
+        allowHeader(HttpHeaders.ContentType)
+        allowMethod(HttpMethod.Get)
+        allowHeader(HttpHeaders.Authorization)
+        allowCredentials = true
+        anyHost()
     }
 
     val client = HttpClient(Jetty) {
@@ -61,9 +70,23 @@ fun Application.module() {
             if (resource is Resource.Success) {
                 resource.data?.let { data ->
                     call.respond(data)
+                } ?: run {
+                    call.respond(
+                        ErrorResponse(
+                            message = "No news"
+                        )
+                    )
                 }
             } else {
-                call.respond(resource.error!!)
+                resource.error?.let { error ->
+                    call.respond(error)
+                } ?: run {
+                    call.respond(
+                        ErrorResponse(
+                            message = "Something went wrong"
+                        )
+                    )
+                }
             }
         }
     }
