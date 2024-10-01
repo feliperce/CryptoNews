@@ -9,7 +9,6 @@ import io.github.feliperce.cryptonews.di.initKoin
 import org.jetbrains.compose.resources.painterResource
 
 fun main() = application {
-
     initKoin {
 
     }

@@ -1,4 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -12,12 +11,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     kotlin("plugin.serialization") version "2.0.20"
     id("com.github.gmazzo.buildconfig") version "5.5.0"
-}
-
-val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
-
-buildConfig {
-    buildConfigField("API_KEY", apiKey)
 }
 
 kotlin {
@@ -71,14 +64,13 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
-            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.materialIconsExtended)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-
+            implementation(projects.shared)
 
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
