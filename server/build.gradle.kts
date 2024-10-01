@@ -1,8 +1,16 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
     application
     id("com.github.gmazzo.buildconfig") version "5.5.0"
+}
+
+val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
+
+buildConfig {
+    buildConfigField("API_KEY", apiKey)
 }
 
 group = "io.github.feliperce.cryptonews"
@@ -19,4 +27,13 @@ dependencies {
     implementation(libs.ktor.server.netty)
     testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
+
+    implementation(libs.ktor.server.content.negotiation)
+
+    // client
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.json)
+    implementation(libs.ktor.client.jetty)
 }
