@@ -2,14 +2,7 @@ package io.github.feliperce.cryptonews.feature.news.mapper
 
 import io.github.feliperce.cryptonews.data.remote.response.ArticleItem
 import io.github.feliperce.cryptonews.data.remote.response.NewsResponse
-import io.github.feliperce.cryptonews.data.remote.response.SourceItem
-
-
-fun SourceItem.toSource() =
-    Source(
-        id = id ?: "",
-        name = name ?: ""
-    )
+import kotlinx.serialization.Serializable
 
 fun ArticleItem.toArticle() =
     Article(
@@ -17,7 +10,7 @@ fun ArticleItem.toArticle() =
         content = content ?: "",
         description = description ?: "",
         publishedAt = publishedAt ?: "",
-        source = source?.toSource() ?: Source(),
+        sourceName = source?.name ?: "",
         title = title ?: "",
         url = url ?: "",
         urlToImage = urlToImage ?: ""
@@ -41,18 +34,14 @@ data class News(
     val totalResults: Int = 0
 )
 
+@Serializable
 data class Article(
     val author: String = "",
     val content: String = "",
     val description: String = "",
     val publishedAt: String = "",
-    val source: Source = Source(),
+    val sourceName: String = "",
     val title: String = "",
     val url: String = "",
     val urlToImage: String = ""
-)
-
-data class Source(
-    val id: String = "",
-    val name: String = ""
 )
