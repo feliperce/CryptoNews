@@ -45,3 +45,8 @@ data class Article(
     val url: String = "",
     val urlToImage: String = ""
 )
+
+@Serializable
+data class Details(
+    val article: Article
+)

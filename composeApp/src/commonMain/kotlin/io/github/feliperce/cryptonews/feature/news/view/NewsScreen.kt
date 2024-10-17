@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -17,6 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import io.github.feliperce.cryptonews.feature.nav.view.Screen
 import io.github.feliperce.cryptonews.feature.news.mapper.Article
 import io.github.feliperce.cryptonews.feature.news.mapper.News
 import io.github.feliperce.cryptonews.feature.news.state.NewsIntent
@@ -28,12 +26,13 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NewsScreen(
-    navHostController: NavHostController,
-    snackbarHostState: SnackbarHostState
+    navHostController: NavHostController
 ) {
     val newsViewModel: NewsViewModel = koinViewModel()
 
     val newsUiState by newsViewModel.newsState.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         newsViewModel.sendIntent(
@@ -50,28 +49,39 @@ fun NewsScreen(
         }
     }
 
-    Column {
-        newsUiState.news?.let { news ->
-            NewsContent(
-                news = news,
-                onArticleClick = { article ->
-                    navHostController.navigate(
-                        article
-                    )
+    Scaffold(
+        scaffoldState = rememberScaffoldState(),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "News")
                 }
             )
         }
-    }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            newsUiState.news?.let { news ->
+                NewsContent(
+                    news = news,
+                    onArticleClick = { article ->
+                        navHostController.navigate(
+                            Screen.NewsDetailScreen(article)
+                        )
+                    }
+                )
+            }
+        }
 
-    if (newsUiState.loading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
+        if (newsUiState.loading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
-
 }
 
 @Composable
@@ -94,9 +104,10 @@ fun NewsItem(
 ) {
     Row(
         modifier = Modifier
+            .clickable { onArticleClick(article) }
             .fillMaxWidth()
             .padding(MarginPaddingSizeMedium)
-            .clickable { onArticleClick(article) }
+
     ) {
         AsyncImage(
             modifier = Modifier.size(100.dp),
