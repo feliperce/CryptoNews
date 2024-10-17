@@ -1,22 +1,20 @@
 package io.github.feliperce.cryptonews.feature.news.view
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
+import io.github.feliperce.cryptonews.feature.nav.view.Screen
 import io.github.feliperce.cryptonews.feature.news.mapper.Article
 import io.github.feliperce.cryptonews.feature.news.mapper.News
 import io.github.feliperce.cryptonews.feature.news.state.NewsIntent
@@ -28,11 +26,13 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NewsScreen(
-    snackbarHostState: SnackbarHostState
+    navHostController: NavHostController
 ) {
     val newsViewModel: NewsViewModel = koinViewModel()
 
     val newsUiState by newsViewModel.newsState.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
         newsViewModel.sendIntent(
@@ -49,40 +49,65 @@ fun NewsScreen(
         }
     }
 
-    Column {
-        newsUiState.news?.let { news ->
-            NewsContent(news)
+    Scaffold(
+        scaffoldState = rememberScaffoldState(),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "News")
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            newsUiState.news?.let { news ->
+                NewsContent(
+                    news = news,
+                    onArticleClick = { article ->
+                        navHostController.navigate(
+                            Screen.NewsDetailScreen(article)
+                        )
+                    }
+                )
+            }
+        }
+
+        if (newsUiState.loading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
         }
     }
-
-    if (newsUiState.loading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    }
-
 }
 
 @Composable
 fun NewsContent(
-    news: News
+    news: News,
+    onArticleClick: (article: Article) -> Unit
 ) {
-
     Column {
-        NewsItemList(news.articles)
+        NewsItemList(
+            articleList = news.articles,
+            onArticleClick = onArticleClick
+        )
     }
-
 }
 
 @Composable
-fun NewsItem(article: Article) {
+fun NewsItem(
+    article: Article,
+    onArticleClick: (article: Article) -> Unit
+) {
     Row(
         modifier = Modifier
+            .clickable { onArticleClick(article) }
             .fillMaxWidth()
             .padding(MarginPaddingSizeMedium)
+
     ) {
         AsyncImage(
             modifier = Modifier.size(100.dp),
@@ -110,12 +135,18 @@ fun NewsItem(article: Article) {
 }
 
 @Composable
-fun NewsItemList(articleList: List<Article>) {
+fun NewsItemList(
+    articleList: List<Article>,
+    onArticleClick: (article: Article) -> Unit
+) {
     LazyColumn() {
         items(
             items = articleList
         ) { article ->
-            NewsItem(article)
+            NewsItem(
+                article = article,
+                onArticleClick = onArticleClick
+            )
             Divider()
         }
     }
@@ -125,7 +156,10 @@ fun NewsItemList(articleList: List<Article>) {
 @Preview
 fun NewsItemPreview() {
     MaterialTheme {
-        NewsItem(fakeArticle)
+        NewsItem(
+            article = fakeArticle,
+            onArticleClick = {}
+        )
     }
 }
 
@@ -133,7 +167,10 @@ fun NewsItemPreview() {
 @Preview
 fun NewsItemListPreview() {
     MaterialTheme {
-        NewsItemList(fakeArticleList)
+        NewsItemList(
+            articleList = fakeArticleList,
+            onArticleClick = {}
+        )
     }
 }
 
