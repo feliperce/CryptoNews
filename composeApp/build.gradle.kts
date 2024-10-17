@@ -88,6 +88,8 @@ kotlin {
             implementation(libs.coil.network.ktor)
 
             implementation(libs.navigation.compose)
+
+            implementation(libs.uri.kmp)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
