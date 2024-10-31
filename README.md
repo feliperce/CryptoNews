@@ -8,6 +8,9 @@ Built with:
  * Ktor
  * MVI
 
-Need news api key to build the project.
-Put the key on your local.properties:
+Need [NewsApi](https://newsapi.org/) key to build the project.
+
+Put the key in local.properties:
+```
 apiKey=YOUR_KEY
+```
