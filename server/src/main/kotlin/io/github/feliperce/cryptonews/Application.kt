@@ -5,7 +5,7 @@ import io.github.feliperce.cryptonews.data.remote.response.ErrorResponse
 import io.github.feliperce.cryptonews.data.remote.response.NewsResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.jetty.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
@@ -34,11 +34,18 @@ fun Application.module() {
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.Authorization)
-        allowCredentials = true
+        allowHeader(HttpHeaders.AcceptEncoding)
+        allowHeader(HttpHeaders.AcceptLanguage)
+        allowHeader(HttpHeaders.CacheControl)
+        allowHeader(HttpHeaders.AccessControlMaxAge)
+        allowHeader(HttpHeaders.Connection)
+        allowHeader(HttpHeaders.Host)
+        allowHeader(HttpHeaders.Upgrade)
+        allowHeader(HttpHeaders.UserAgent)
         anyHost()
     }
 
-    val client = HttpClient(Jetty) {
+    val client = HttpClient(CIO) {
         install(Logging) {
             level = LogLevel.ALL
         }
@@ -57,36 +64,51 @@ fun Application.module() {
 
     routing {
         get("/getNews") {
-            val response = newsApi.getNews()
+            runCatching {
+                val response = newsApi.getNews()
 
-            val resource = if (response.status == HttpStatusCode.OK) {
-                val news = response.body() as NewsResponse
-                Resource.Success<NewsResponse, ErrorResponse>(data = news)
-            } else {
-                val errorResponse = response.body() as ErrorResponse
-                Resource.Error<NewsResponse, ErrorResponse>(error = errorResponse)
-            }
+                val resource = if (response.status == HttpStatusCode.OK) {
+                    val news = response.body() as NewsResponse
+                    Resource.Success<NewsResponse, ErrorResponse>(data = news)
+                } else {
+                    val errorResponse = response.body() as ErrorResponse
+                    Resource.Error<NewsResponse, ErrorResponse>(error = errorResponse)
+                }
 
-            if (resource is Resource.Success) {
-                resource.data?.let { data ->
-                    call.respond(data)
-                } ?: run {
-                    call.respond(
-                        ErrorResponse(
-                            message = "No news"
+                println(resource)
+
+                if (resource is Resource.Success) {
+                    resource.data?.let { data ->
+                        call.respond(data)
+                    } ?: run {
+                        call.response.status(HttpStatusCode.NotAcceptable)
+                        call.respond(
+                            ErrorResponse(
+                                message = "No news"
+                            )
                         )
-                    )
-                }
-            } else {
-                resource.error?.let { error ->
-                    call.respond(error)
-                } ?: run {
-                    call.respond(
-                        ErrorResponse(
-                            message = "Something went wrong"
+                    }
+                } else {
+                    call.response.status(HttpStatusCode.NotAcceptable)
+
+                    resource.error?.let { error ->
+                        call.respond(error)
+                    } ?: run {
+                        call.respond(
+                            ErrorResponse(
+                                message = "Something went wrong"
+                            )
                         )
-                    )
+                    }
                 }
+            }.onFailure {
+                println(it.message)
+                call.response.status(HttpStatusCode.NotAcceptable)
+                call.respond(
+                    ErrorResponse(
+                        message = it.message ?: "Something went wrong"
+                    )
+                )
             }
         }
     }

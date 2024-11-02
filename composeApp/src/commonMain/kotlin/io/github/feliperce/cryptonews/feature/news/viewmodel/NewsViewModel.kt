@@ -2,6 +2,7 @@ package io.github.feliperce.cryptonews.feature.news.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.github.aakira.napier.Napier
 import io.github.feliperce.cryptonews.data.remote.Resource
 import io.github.feliperce.cryptonews.feature.news.repository.NewsRepository
 import io.github.feliperce.cryptonews.feature.news.state.NewsIntent
@@ -50,6 +51,7 @@ class NewsViewModel(
                         }
                     }
                     is Resource.Error -> {
+                        Napier.e("ERROR ${res.error?.code}: ${res.error?.message}")
                         _newsState.update {
                             it.copy(errorData = res.error)
                         }
