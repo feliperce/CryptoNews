@@ -90,6 +90,8 @@ kotlin {
             implementation(libs.navigation.compose)
 
             implementation(libs.uri.kmp)
+
+            implementation(libs.napier)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
