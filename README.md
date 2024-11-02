@@ -1,26 +1,26 @@
+![Kotlin Badge](https://img.shields.io/badge/kotlin-v2.0.20-%237F52FF?logo=kotlin)
+![Compose Badge](https://img.shields.io/badge/compose_multiplatform-v1.7.0-%234285F4?logo=jetpackcompose)
+![Platform Windows Badge](https://img.shields.io/badge/platform-windows-%230078D4?logo=windows)
+![Platform Linux Badge](https://img.shields.io/badge/platform-Linux-%23FCC624?logo=linux)
+![Platform MacOS Badge](https://img.shields.io/badge/platform-macOS-%23000000?logo=macos)
+![Android Badge](https://img.shields.io/badge/platform-Android-%2334A853?logo=android)
+![iOS badge](https://img.shields.io/badge/platform-iOS-23000000?logo=ios&color=%23000000)
+![WebAssembly](https://img.shields.io/badge/platform-WebAssembly-23000000?logo=webassembly&color=%23654FF0)
+![Ktor Server](https://img.shields.io/badge/platform-Ktor_server-23000000?logo=ktor&color=%23087CFA)
+
 This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop, Server.
 
-* `/composeApp` is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - `commonMain` is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    `iosMain` would be the right folder for such calls.
+Built with:
 
-* `/iosApp` contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform, 
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+ * Kotlin Multiplatform
+ * Compose Multiplatform
+ * Koin
+ * Ktor
+ * MVI
 
-* `/server` is for the Ktor server application.
+Need [NewsApi](https://newsapi.org/) key to build the project.
 
-* `/shared` is for the code that will be shared between all targets in the project.
-  The most important subfolder is `commonMain`. If preferred, you can add code to the platform-specific folders here too.
-
-
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
-
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [GitHub](https://github.com/JetBrains/compose-multiplatform/issues).
-
-You can open the web application by running the `:composeApp:wasmJsBrowserDevelopmentRun` Gradle task.
+Put the key in local.properties:
+```
+apiKey=YOUR_KEY
+```
