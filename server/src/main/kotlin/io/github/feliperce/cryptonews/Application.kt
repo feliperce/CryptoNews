@@ -5,7 +5,7 @@ import io.github.feliperce.cryptonews.data.remote.response.ErrorResponse
 import io.github.feliperce.cryptonews.data.remote.response.NewsResponse
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.engine.jetty.*
+import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
@@ -34,10 +34,18 @@ fun Application.module() {
         allowHeader(HttpHeaders.ContentType)
         allowMethod(HttpMethod.Get)
         allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.AcceptEncoding)
+        allowHeader(HttpHeaders.AcceptLanguage)
+        allowHeader(HttpHeaders.CacheControl)
+        allowHeader(HttpHeaders.AccessControlMaxAge)
+        allowHeader(HttpHeaders.Connection)
+        allowHeader(HttpHeaders.Host)
+        allowHeader(HttpHeaders.Upgrade)
+        allowHeader(HttpHeaders.UserAgent)
         anyHost()
     }
 
-    val client = HttpClient(Jetty) {
+    val client = HttpClient(CIO) {
         install(Logging) {
             level = LogLevel.ALL
         }

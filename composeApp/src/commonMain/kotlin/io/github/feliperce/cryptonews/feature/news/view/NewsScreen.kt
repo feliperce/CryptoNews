@@ -55,7 +55,7 @@ fun NewsScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = "News")
+                    Text(text = "CryptoNews")
                 }
             )
         }
