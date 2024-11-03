@@ -24,3 +24,21 @@ Put the key in local.properties:
 ```
 apiKey=YOUR_KEY
 ```
+
+Android:
+
+<p align="center">
+  <img src="https://i.imgur.com/KBdsGMe.png" width="300" />
+</p>
+
+Desktop:
+
+<p align="center">
+  <img src="https://i.imgur.com/1UAj5gW.png" width="300" />
+</p>
+
+WebAssembly:
+
+<p align="center">
+  <img src="https://i.imgur.com/AU7iTin.png" />
+</p>
