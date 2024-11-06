@@ -14,6 +14,7 @@ Built with:
 
  * Kotlin Multiplatform
  * Compose Multiplatform
+ * Night Theme
  * Koin
  * Ktor
  * MVI
@@ -24,3 +25,21 @@ Put the key in local.properties:
 ```
 apiKey=YOUR_KEY
 ```
+
+Android:
+
+<p align="center">
+  <img src="https://i.imgur.com/sE54Z5k.png" width="300" />
+</p>
+
+Desktop:
+
+<p align="center">
+  <img src="https://i.imgur.com/Yf3sauA.png" width="300" />
+</p>
+
+WebAssembly:
+
+<p align="center">
+  <img src="https://i.imgur.com/QxoKi3Y.png" />
+</p>
