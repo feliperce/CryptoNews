@@ -33,7 +33,7 @@ private val DarkColorPalette = lightColors(
 
 @Composable
 fun CryptoNewsTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = false,
     content: @Composable() () -> Unit
 ) {
     val colorsScheme = if (darkTheme) {
