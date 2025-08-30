@@ -22,10 +22,10 @@ class NewsRepository(
         val response = newsApi.getNews()
 
         if (response.status == HttpStatusCode.OK) {
-            val news = response.body() as NewsResponse
+            val news = response.body<NewsResponse>()
             emit(Resource.Success(data = news.toNews()))
         } else {
-            val errorResponse = response.body() as ErrorResponse
+            val errorResponse = response.body<ErrorResponse>()
             emit(Resource.Error(error = errorResponse.toErrorData()))
         }
     }.onStart {

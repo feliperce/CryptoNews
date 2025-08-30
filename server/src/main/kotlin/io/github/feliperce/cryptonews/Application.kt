@@ -68,10 +68,10 @@ fun Application.module() {
                 val response = newsApi.getNews()
 
                 val resource = if (response.status == HttpStatusCode.OK) {
-                    val news = response.body() as NewsResponse
+                    val news = response.body<NewsResponse>()
                     Resource.Success<NewsResponse, ErrorResponse>(data = news)
                 } else {
-                    val errorResponse = response.body() as ErrorResponse
+                    val errorResponse = response.body<ErrorResponse>()
                     Resource.Error<NewsResponse, ErrorResponse>(error = errorResponse)
                 }
 

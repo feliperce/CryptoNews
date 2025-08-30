@@ -1,8 +1,8 @@
 [versions]
-agp = "8.2.2"
-android-compileSdk = "34"
+agp = "8.11.0"
+android-compileSdk = "36"
 android-minSdk = "24"
-android-targetSdk = "34"
+android-targetSdk = "36"
 androidx-activityCompose = "1.9.1"
 androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.1.4"
@@ -24,6 +24,7 @@ coil = "3.0.0-alpha06"
 napier = "2.7.1"
 navigationCompose = "2.8.0-alpha10"
 uriKmp = "0.0.18"
+mockk = "1.14.5"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -66,6 +67,7 @@ coil = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 uri-kmp = { module = "com.eygraber:uri-kmp", version.ref = "uriKmp" }
+mockk = { module = "io.mockk:mockk", version.ref="mockk" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

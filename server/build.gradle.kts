@@ -4,10 +4,10 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
     application
-    id("com.github.gmazzo.buildconfig") version "5.5.0"
+    id("com.github.gmazzo.buildconfig") version "5.6.7"
 }
 
-val apiKey: String = gradleLocalProperties(rootDir).getProperty("apiKey")
+val apiKey: String = gradleLocalProperties(rootDir, providers).getProperty("apiKey")
 
 buildConfig {
     buildConfigField("API_KEY", apiKey)
