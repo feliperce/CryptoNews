@@ -18,12 +18,18 @@ Built with:
  * Koin
  * Ktor
  * MVI
+ * Mockk Unit test
 
 Need [NewsApi](https://newsapi.org/) key to build the project.
 
 Put the key in local.properties:
 ```
 apiKey=YOUR_KEY
+```
+
+And set your server host:
+```
+sv.host=localhost
 ```
 
 Android:

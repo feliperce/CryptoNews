@@ -93,10 +93,21 @@ kotlin {
 
             implementation(libs.napier)
         }
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+        }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
             implementation(libs.ktor.client.okhttp)
+        }
+        val desktopTest by getting
+        desktopTest.dependencies {
+            implementation(libs.kotlin.test.junit)
+            implementation("io.mockk:mockk:1.14.5")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
+            implementation("io.ktor:ktor-client-mock:3.0.0-beta-2-eap-913")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.1")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -17,6 +17,7 @@ import coil3.compose.AsyncImage
 import io.github.feliperce.cryptonews.feature.nav.view.Screen
 import io.github.feliperce.cryptonews.feature.news.mapper.Article
 import io.github.feliperce.cryptonews.feature.news.mapper.News
+import io.github.feliperce.cryptonews.feature.news.state.NewsEffect
 import io.github.feliperce.cryptonews.feature.news.state.NewsIntent
 import io.github.feliperce.cryptonews.feature.news.viewmodel.NewsViewModel
 import io.github.feliperce.cryptonews.ui.theme.MarginPaddingSizeMedium
@@ -40,12 +41,13 @@ fun NewsScreen(
         )
     }
 
-    LaunchedEffect(newsUiState.errorData?.id) {
-        newsUiState.errorData?.let { errorData ->
-            snackbarHostState
-                .showSnackbar(
-                    message = errorData.message
-                )
+    LaunchedEffect(Unit) {
+        newsViewModel.effects.collect { effect ->
+            when (effect) {
+                is NewsEffect.ShowError -> {
+                    snackbarHostState.showSnackbar(effect.message)
+                }
+            }
         }
     }
 
